@@ -1,0 +1,28 @@
+//
+// Created by Iris Chow on 2026-03-04.
+//
+
+#ifndef INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
+#define INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
+#include <functional>
+
+#include "../event/BaseEvent.h"
+
+class Entity;
+class World;
+
+class EventResponseSystem {
+public:
+  EventResponseSystem(World& world);
+
+private:
+  // Collisions
+  void onCollision(const CollisionEvent& event, const char* otherTag, World& world);
+  bool getCollisionEntities(const CollisionEvent& event, const char* otherTag, Entity*& player, Entity*& other);
+
+  // Player action
+  void onPlayerAction(const PlayerActionEvent& event,
+    const std::function<void(Entity* player, PlayerAction action)>& callback);
+};
+
+#endif //INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
