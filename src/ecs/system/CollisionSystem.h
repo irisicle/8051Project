@@ -5,9 +5,9 @@
 #ifndef INC_8051TUTORIAL_COLLISIONSYSTEM_H
 #define INC_8051TUTORIAL_COLLISIONSYSTEM_H
 #include <set>
+#include <vector>
 
 #include "../Entity.h"
-#include <vector>
 
 using CollisionKey = std::pair<Entity*, Entity*>;
 
@@ -17,7 +17,7 @@ class World;
 class CollisionSystem {
 public:
     static void update(World& world);
-    std::set<CollisionKey> activeCollisions;
+
 private:
     static std::vector<Entity*> queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities);
     static CollisionKey makeKey(Entity* entityA, Entity* entityB) {

@@ -34,6 +34,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& event, const char* o
     if (!getCollisionEntities(event, otherTag, player, other)) return;
 
     if (std::string(otherTag) == "item") {
+        if (event.state != CollisionState::Enter) return;
+
         other->destroy();
 
         for (const auto& entity : world.getEntities()) {
@@ -50,16 +52,31 @@ void EventResponseSystem::onCollision(const CollisionEvent& event, const char* o
     }
 
     else if (std::string(otherTag) == "wall") {
+        if (event.state != CollisionState::Stay) return;
+
         // Stop the player
         auto& transform = player->getComponent<Transform>();
         transform.position = transform.oldPosition;
     }
 
     else if (std::string(otherTag) == "projectile") {
-        player->destroy();
+        if (event.state != CollisionState::Enter) return;
 
-        // Change scenes defer
-        Game::onSceneChangeRequest("gameover");
+        // This logic is simple and direct
+        // Ideally we would only operate on data in an update function (hinting at transient entities)
+        auto& health = player->getComponent<Health>();
+        health.currentHealth--;
+
+        Game::gameState.playerHealth = health.currentHealth;
+
+        std::cout << health.currentHealth << std::endl;
+
+        if (health.currentHealth <= 0) {
+            player->destroy();
+
+            // Change scenes defer
+            Game::onSceneChangeRequest("gameover");
+        }
     }
 }
 

@@ -9,6 +9,7 @@
 
 #include "manager/AssetManager.h"
 
+GameState Game::gameState{};
 std::function<void(std::string)> Game::onSceneChangeRequest;
 
 Game::Game() = default;
@@ -57,11 +58,15 @@ void Game::init(
     AssetManager::loadAnimation("enemy", "../asset/animations/slime2_animations.xml");
 
     // Load scenes
-    sceneManager.loadScene("level1", "../asset/map.tmx", width, height);
-    sceneManager.loadScene("level2", "../asset/map2.tmx", width, height);
+    sceneManager.loadScene(SceneType::MainMenu, "mainmenu", nullptr, width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "level1", "../asset/map.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "level2", "../asset/map2.tmx", width, height);
+
+    // Init game data/state
+    gameState.playerHealth = 5;
 
     // Start Level 1
-    sceneManager.changeSceneDeferred("level1");
+    sceneManager.changeSceneDeferred("mainmenu");
 
     // Resolve scene callback
     onSceneChangeRequest = [this](const std::string& sceneName) {

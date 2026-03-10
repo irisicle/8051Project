@@ -22,8 +22,9 @@ add_executable(8051Tutorial src/main.cpp
         src/ecs/system/CollisionSystem.cpp
         src/vendor/tinyxml2.cpp
         src/manager/AssetManager.cpp
-        src/manager/Scene.cpp
-        src/ecs/system/EventResponseSystem.cpp)
+        src/scene/Scene.cpp
+        src/ecs/system/EventResponseSystem.cpp
+        src/ecs/system/MainMenuSystem.cpp)
 
 target_link_libraries(8051Tutorial SDL3::SDL3
 SDL3_image::SDL3_image)

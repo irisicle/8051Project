@@ -18,6 +18,8 @@
 #include "system/MovementSystem.h"
 #include "system/RenderSystem.h"
 #include "system/SpawnTimerSystem.h"
+#include "../scene/SceneType.h"
+#include "system/MainMenuSystem.h"
 
 class World {
     Map map;
@@ -33,17 +35,25 @@ class World {
     SpawnTimerSystem spawnTimerSystem;
     DestructionSystem destructionSystem;
     EventResponseSystem eventResponseSystem{*this};
+    MainMenuSystem mainMenuSystem;
 
 public:
     World() = default;
-    void update(const float deltaTime, const SDL_Event& event) {
-        KeyboardInputSystem::update(entities, event);
-        MovementSystem::update(entities, deltaTime);
-        CollisionSystem::update(*this);
-        AnimationSystem::update(entities, deltaTime);
-        CameraSystem::update(entities);
-        SpawnTimerSystem::update(entities, deltaTime);
-        DestructionSystem::update(entities);
+    void update(const float deltaTime, const SDL_Event& event, const SceneType sceneType) {
+        if (sceneType == SceneType::MainMenu) {
+            MainMenuSystem::update(event);
+        }
+
+        else {
+            KeyboardInputSystem::update(entities, event);
+            MovementSystem::update(entities, deltaTime);
+            CollisionSystem::update(*this);
+            AnimationSystem::update(entities, deltaTime);
+            CameraSystem::update(entities);
+            SpawnTimerSystem::update(entities, deltaTime);
+            DestructionSystem::update(entities);
+        }
+
         synchronizeEntities();
         cleanUp();
     }

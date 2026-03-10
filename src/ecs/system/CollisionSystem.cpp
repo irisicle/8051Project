@@ -11,6 +11,9 @@ void CollisionSystem::update(World& world) {
     // Get a list of entities that have colliders & transforms
     const std::vector<Entity*> collidables = queryCollidables(world.getEntities());
 
+    std::set<CollisionKey> activeCollisions;
+    std::set<CollisionKey> currentCollisions;
+
     // Update all collider positions first
     for (const auto entity : collidables) {
         const auto& transform = entity->getComponent<Transform>();
@@ -18,8 +21,6 @@ void CollisionSystem::update(World& world) {
         rect.x = transform.position.x;
         rect.y = transform.position.y;
     }
-
-    // std::set<CollisionKey> currentCollisions;
 
     // Outer loop
     for (size_t i = 0; i < collidables.size(); ++i) {
@@ -33,27 +34,25 @@ void CollisionSystem::update(World& world) {
             auto& entityB = collidables[j];
 
             if (auto& colliderB = entityB->getComponent<Collider>(); Collision::AABB(colliderA, colliderB)) {
-                world.getEventManager().emit(CollisionEvent(entityA, entityB, CollisionState::Enter));
-                //     CollisionKey key = makeKey(entityA, entityB);
-                //     currentCollisions.insert(key);
-                //
-                //     if (!activeCollisions.contains(key)) {
-                //         world.getEventManager().emit(CollisionEvent(entityA, entityB, CollisionState::Enter));
-                //     }
-                //
-                //     world.getEventManager().emit(CollisionEvent(entityA, entityB, CollisionState::Stay));
-                // }
+                CollisionKey key = makeKey(entityA, entityB);
+                currentCollisions.insert(key);
+
+                if (!activeCollisions.contains(key)) {
+                    world.getEventManager().emit(CollisionEvent(entityA, entityB, CollisionState::Enter));
+                }
+
+                world.getEventManager().emit(CollisionEvent(entityA, entityB, CollisionState::Stay));
             }
         }
     }
-    //
-    // for (auto& key : activeCollisions) {
-    //     if (!currentCollisions.contains(key)) {
-    //         world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit});
-    //     }
-    // }
-    //
-    // activeCollisions = std::move(currentCollisions); // Update with current collisions
+
+    for (auto& key : activeCollisions) {
+        if (!currentCollisions.contains(key)) {
+            world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit});
+        }
+    }
+
+    activeCollisions = std::move(currentCollisions); // Update with current collisions
 }
 
 std::vector<Entity*> CollisionSystem::queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities) {

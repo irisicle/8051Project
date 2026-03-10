@@ -2,13 +2,32 @@
 // Created by Iris Chow on 2026-02-25.
 //
 #include "Scene.h"
+#include "../Game.h"
+#include "../manager/AssetManager.h"
 
-#include <iostream>
-#include <ostream>
+Scene::Scene(
+    const SceneType sceneType,
+    const char* sceneName,
+    const char* mapPath,
+    const int windowWidth,
+    const int windowHeight
+    ) : name (sceneName), type(sceneType) {
 
-#include "AssetManager.h"
+    if (sceneType == SceneType::MainMenu) {
+        // Camera
+        auto& cam(world.createEntity());
+        cam.addComponent<Camera>();
 
-Scene::Scene(const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight) : name (sceneName) {
+        // Menu
+        auto& menu(world.createEntity());
+        const auto& menuTransform = menu.addComponent<Transform>(Vector2D(0, 0), 0.0f, 1.0f);
+
+        SDL_Texture* texture = TextureManager::load("../asset/menu.png");
+        SDL_FRect menuSrc {0, 0, static_cast<float>(windowWidth), static_cast<float>(windowHeight)};
+        SDL_FRect menuDest {menuTransform.position.x, menuTransform.position.y, menuSrc.w, menuSrc.h};
+        menu.addComponent<Sprite>(texture, menuSrc, menuDest);
+        return;
+    }
 
     // Load map
     world.getMap().load(mapPath, TextureManager::load("../asset/tileset.png"));
@@ -17,7 +36,7 @@ Scene::Scene(const char* sceneName, const char* mapPath, const int windowWidth, 
     for (auto& collider : world.getMap().colliders) {
         auto& entity = world.createEntity();
         entity.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
-        auto&[tag, rect] = entity.addComponent<Collider>("no_wall");
+        auto&[tag, rect] = entity.addComponent<Collider>("wall");
         rect.x = collider.rect.x;
         rect.y = collider.rect.y;
         rect.w = collider.rect.w;
@@ -25,7 +44,7 @@ Scene::Scene(const char* sceneName, const char* mapPath, const int windowWidth, 
     }
 
     // Add entities
-    auto& cam = world.createEntity();
+    auto& cam(world.createEntity());
     SDL_FRect camView{};
     camView.w = static_cast<float>(windowWidth);
     camView.h = static_cast<float>(windowHeight);
@@ -57,15 +76,17 @@ Scene::Scene(const char* sceneName, const char* mapPath, const int windowWidth, 
     auto animation = AssetManager::getAnimation("player");
     player.addComponent<Animation>(animation);
 
-    SDL_Texture* texture = TextureManager::load("../asset/animations/Slime2_Attack_without_shadow.png");
+    SDL_Texture* playerTexture = TextureManager::load("../asset/animations/Slime2_Attack_without_shadow.png");
     SDL_FRect playerSrc = animation.clips[animation.currentClip].frameIndices[0];
     SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 64, 64}; // Size of the sprite
 
-    player.addComponent<Sprite>(texture, playerSrc, playerDst);
+    player.addComponent<Sprite>(playerTexture, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("player");
     playerCollider.rect.w = playerDst.w;
     playerCollider.rect.h = playerDst.h;
+
+    player.addComponent<Health>(Game::gameState.playerHealth);
 
     player.addComponent<PlayerTag>();
 
@@ -95,6 +116,6 @@ Scene::Scene(const char* sceneName, const char* mapPath, const int windowWidth, 
     });
 
     // Add scene state
-    auto &state(world.createEntity());
+    auto& state(world.createEntity());
     state.addComponent<SceneState>();
 }

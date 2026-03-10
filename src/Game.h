@@ -13,6 +13,10 @@
 #include "ecs/World.h"
 #include "manager/SceneManager.h"
 
+struct GameState{
+    int playerHealth;
+};
+
 class Game {
 public:
     Game();
@@ -37,6 +41,7 @@ public:
 
     SceneManager sceneManager;
     static std::function<void(std::string)> onSceneChangeRequest;
+    static GameState gameState;
 
 private:
     int frameCount = 0;
