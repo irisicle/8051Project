@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-02-22.
 //
 
-#ifndef INC_8051TUTORIAL_ANIMATIONSYSTEM_H
-#define INC_8051TUTORIAL_ANIMATIONSYSTEM_H
+#ifndef INC_8051PROJECT_ANIMATIONSYSTEM_H
+#define INC_8051PROJECT_ANIMATIONSYSTEM_H
 #include "AnimationClip.h"
 #include "../Component.h"
 #include "../Entity.h"
@@ -68,4 +68,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_ANIMATIONSYSTEM_H
+#endif //INC_8051PROJECT_ANIMATIONSYSTEM_H

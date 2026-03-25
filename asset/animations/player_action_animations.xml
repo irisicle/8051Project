@@ -1,0 +1,6 @@
+<walk_right>
+    <frame x="0" y="144" w="32" h="32" />
+    <frame x="48" y="144" w="32" h="32" />
+    <frame x="96" y="144" w="32" h="32" />
+    <frame x="144" y="144" w="32" h="32" />
+</walk_right>

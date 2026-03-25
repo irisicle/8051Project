@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-02-22.
 //
 
-#ifndef INC_8051TUTORIAL_ASSETMANAGER_H
-#define INC_8051TUTORIAL_ASSETMANAGER_H
+#ifndef INC_8051PROJECT_ASSETMANAGER_H
+#define INC_8051PROJECT_ASSETMANAGER_H
 #include <string>
 #include <unordered_map>
 
@@ -19,4 +19,4 @@ public:
 
 };
 
-#endif //INC_8051TUTORIAL_ASSETMANAGER_H
+#endif //INC_8051PROJECT_ASSETMANAGER_H

@@ -2,10 +2,10 @@
 // Created by Iris Chow on 2026-01-14.
 //
 
-// #ifndef INC_8051TUTORIAL_GAME_H
-// #define INC_8051TUTORIAL_GAME_H
+// #ifndef INC_8051PROJECT_GAME_H
+// #define INC_8051PROJECT_GAME_H
 //
-// #endif //INC_8051TUTORIAL_GAME_H
+// #endif //INC_8051PROJECT_GAME_H
 
 #pragma once
 #include <SDL3/SDL.h>

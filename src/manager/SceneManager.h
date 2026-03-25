@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-02-25.
 //
 
-#ifndef INC_8051TUTORIAL_SCENEMANAGER_H
-#define INC_8051TUTORIAL_SCENEMANAGER_H
+#ifndef INC_8051PROJECT_SCENEMANAGER_H
+#define INC_8051PROJECT_SCENEMANAGER_H
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -67,4 +67,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_SCENEMANAGER_H
+#endif //INC_8051PROJECT_SCENEMANAGER_H

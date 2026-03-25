@@ -2,11 +2,13 @@
 // Created by Iris Chow on 2026-01-14.
 //
 
-#ifndef INC_8051TUTORIAL_MAP_H
-#define INC_8051TUTORIAL_MAP_H
+#ifndef INC_8051PROJECT_MAP_H
+#define INC_8051PROJECT_MAP_H
 
-#include "ecs/Component.h"
 #include <vector>
+
+#include "../ecs/Component.h"
+#include "Tileset.h"
 
 class Map {
 
@@ -14,15 +16,17 @@ public:
     Map() = default;
     ~Map() = default;
 
-    void load(const char* path, SDL_Texture* ts);
+    void load(const char* path);
     void draw(const Camera& cam) const;
 
-    SDL_Texture* tileset = nullptr;
     int width{}, height{};
+
+    [[nodiscard]] const Tileset* getTilesetFromGid(int gid) const;
+
+    std::vector<Tileset>tilesets;
     std::vector<std::vector<int>> tileData;
     std::vector<Collider> colliders;
     std::vector<SpawnPoint> spawnPoints;
-
 };
 
-#endif //INC_8051TUTORIAL_MAP_H
+#endif //INC_8051PROJECT_MAP_H

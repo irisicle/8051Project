@@ -13,7 +13,7 @@ int main() {
     float deltaTime = 0.0f;
 
     game = new Game();
-    game->init("8051 Tutorial Engine", 800, 600, false);
+    game->init("8051 PROJECT Engine", 800, 600, false);
 
     // Game loop
     while (game->running()) {

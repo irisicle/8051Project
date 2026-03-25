@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-02-04.
 //
 
-#ifndef INC_8051TUTORIAL_EVENTMANAGER_H
-#define INC_8051TUTORIAL_EVENTMANAGER_H
+#ifndef INC_8051PROJECT_EVENTMANAGER_H
+#define INC_8051PROJECT_EVENTMANAGER_H
 #include <functional>
 
 #include "BaseEvent.h"
@@ -54,4 +54,4 @@ private:
     // }
 // };
 
-#endif //INC_8051TUTORIAL_EVENTMANAGER_H
+#endif //INC_8051PROJECT_EVENTMANAGER_H

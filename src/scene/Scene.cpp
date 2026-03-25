@@ -14,34 +14,47 @@ Scene::Scene(
     ) : name (sceneName), type(sceneType) {
 
     if (sceneType == SceneType::MainMenu) {
-        // Camera
-        auto& cam(world.createEntity());
-        cam.addComponent<Camera>();
-
-        // Menu
-        auto& menu(world.createEntity());
-        const auto& menuTransform = menu.addComponent<Transform>(Vector2D(0, 0), 0.0f, 1.0f);
-
-        SDL_Texture* texture = TextureManager::load("../asset/menu.png");
-        SDL_FRect menuSrc {0, 0, static_cast<float>(windowWidth), static_cast<float>(windowHeight)};
-        SDL_FRect menuDest {menuTransform.position.x, menuTransform.position.y, menuSrc.w, menuSrc.h};
-        menu.addComponent<Sprite>(texture, menuSrc, menuDest);
+        initMainMenu(windowWidth, windowHeight);
         return;
     }
 
-    // Load map
-    world.getMap().load(mapPath, TextureManager::load("../asset/tileset.png"));
+    initGameplay(mapPath, windowWidth, windowHeight);
+}
 
-    // Create wall colliders
-    for (auto& collider : world.getMap().colliders) {
-        auto& entity = world.createEntity();
-        entity.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
-        auto&[tag, rect] = entity.addComponent<Collider>("wall");
-        rect.x = collider.rect.x;
-        rect.y = collider.rect.y;
-        rect.w = collider.rect.w;
-        rect.h = collider.rect.h;
-    }
+void Scene::initMainMenu(const int windowWidth, const int windowHeight) {
+
+    // Camera
+    auto& cam(world.createEntity());
+    cam.addComponent<Camera>();
+
+    // Menu
+    auto& menu(world.createEntity());
+    const auto& menuTransform = menu.addComponent<Transform>(Vector2D(0, 0), 0.0f, 1.0f);
+
+    SDL_Texture* texture = TextureManager::load("../asset/ui/menu.png");
+    SDL_FRect menuSrc { 0, 0, static_cast<float>(windowWidth), static_cast<float>(windowHeight) };
+    SDL_FRect menuDest { menuTransform.position.x, menuTransform.position.y, menuSrc.w, menuSrc.h };
+    menu.addComponent<Sprite>(texture, menuSrc, menuDest);
+
+    auto& settingsOverlay = createSettingsOverlay(windowWidth, windowHeight);
+    createCogButton(windowWidth, windowHeight, settingsOverlay);
+}
+
+void Scene::initGameplay(const char* mapPath, const int windowWidth, const int windowHeight) {
+
+    // Load map
+    world.getMap().load(mapPath);
+
+    // // Create wall colliders
+    // for (const auto& collider : world.getMap().colliders) {
+    //     auto& entity = world.createEntity();
+    //     entity.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
+    //     auto& c = entity.addComponent<Collider>("wall");
+    //     c.rect.x = collider.rect.x;
+    //     c.rect.y = collider.rect.y;
+    //     c.rect.w = collider.rect.w;
+    //     c.rect.h = collider.rect.h;
+    // }
 
     // Add entities
     auto& cam(world.createEntity());
@@ -50,22 +63,21 @@ Scene::Scene(
     camView.h = static_cast<float>(windowHeight);
     cam.addComponent<Camera>(camView, world.getMap().width * 32, world.getMap().height * 32);
 
-    // Create item spawn points
-    for (const auto& spawnPoint : world.getMap().spawnPoints) {
-        auto& item = world.createEntity();
-        const auto& itemTransform = item.addComponent<Transform>(Vector2D(spawnPoint.position.x, spawnPoint.position.y), 0.0f, 1.0f);
-
-        SDL_Texture* itemTexture = TextureManager::load("../asset/coin.png");
-        SDL_FRect itemSrc {0, 0, 32, 32};
-        SDL_FRect itemDest {itemTransform.position.x, itemTransform.position.y, 32, 32};
-
-        // Import coin sprite
-        item.addComponent<Sprite>(itemTexture, itemSrc, itemDest);
-        auto&[tag, rect] = item.addComponent<Collider>("item");
-        rect.w = itemDest.w;
-        rect.h = itemDest.h;
-
-    }
+    // // Create item spawn points
+    // for (const auto& point : world.getMap().spawnPoints) {
+    //     auto& item = world.createEntity();
+    //     const auto& itemTransform = item.addComponent<Transform>(Vector2D(point.position.x, point.position.y), 0.0f, 1.0f);
+    //
+    //     SDL_Texture* itemTexture = TextureManager::load("../asset/coin.png");
+    //     SDL_FRect itemSrc { 0, 0, 32, 32 };
+    //     SDL_FRect itemDest { itemTransform.position.x, itemTransform.position.y, 32, 32 };
+    //
+    //     // Import coin sprite
+    //     item.addComponent<Sprite>(itemTexture, itemSrc, itemDest);
+    //     auto& c = item.addComponent<Collider>("item");
+    //     c.rect.w = itemDest.w;
+    //     c.rect.h = itemDest.h;
+    // }
 
     // Create player
     auto& player(world.createEntity());
@@ -76,46 +88,152 @@ Scene::Scene(
     auto animation = AssetManager::getAnimation("player");
     player.addComponent<Animation>(animation);
 
-    SDL_Texture* playerTexture = TextureManager::load("../asset/animations/Slime2_Attack_without_shadow.png");
+    SDL_Texture* playerTexture = TextureManager::load("../asset/animations/character/Basic_Charakter_Spritesheet.png");
     SDL_FRect playerSrc = animation.clips[animation.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 64, 64}; // Size of the sprite
+    SDL_FRect playerDest { playerTransform.position.x, playerTransform.position.y, 32, 32 }; // Size of the sprite
 
-    player.addComponent<Sprite>(playerTexture, playerSrc, playerDst);
+    player.addComponent<Sprite>(playerTexture, playerSrc, playerDest);
 
     auto& playerCollider = player.addComponent<Collider>("player");
-    playerCollider.rect.w = playerDst.w;
-    playerCollider.rect.h = playerDst.h;
+    playerCollider.rect.w = playerDest.w;
+    playerCollider.rect.h = playerDest.h;
 
     player.addComponent<Health>(Game::gameState.playerHealth);
 
     player.addComponent<PlayerTag>();
 
-    // Create spawner
-    auto& spawner(world.createEntity());
-    const auto& spawnerTransform = spawner.addComponent<Transform>(Vector2D(static_cast<float>(windowWidth) / 2.0f, static_cast<float>(windowHeight) / 2.0f), 0.0f, 1.0f);
-    spawner.addComponent<TimedSpawner>(2.0f, [this, spawnerTransform] {
-
-        // Create projectile
-        auto& enemy(world.createDeferredEntity());
-        enemy.addComponent<Transform>(Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
-        enemy.addComponent<Velocity>(Vector2D(0, -1), 100.0f);
-
-        const auto& enemyAnimation = AssetManager::getAnimation("enemy");
-        enemy.addComponent<Animation>(enemyAnimation);
-
-        SDL_Texture* enemyTexture = TextureManager::load("../asset/animations/Slime1_Attack_body.png");
-        SDL_FRect enemySrc {0, 0, 64, 64};
-        SDL_FRect enemyDst {spawnerTransform.position.x, spawnerTransform.position.y, 64, 64};
-        enemy.addComponent<Sprite>(enemyTexture, enemySrc, enemyDst);
-
-        auto&[tag, rect] = enemy.addComponent<Collider>("projectile");
-        rect.w = enemyDst.w;
-        rect.h = enemyDst.h;
-
-        enemy.addComponent<ProjectileTag>();
-    });
+    // // Create spawner
+    // auto& spawner(world.createEntity());
+    // const auto& spawnerTransform = spawner.addComponent<Transform>(Vector2D(static_cast<float>(windowWidth) / 2.0f, static_cast<float>(windowHeight) / 2.0f), 0.0f, 1.0f);
+    // spawner.addComponent<TimedSpawner>(2.0f, [this, spawnerTransform] {
+    //
+    //     // Create projectile
+    //     auto& enemy(world.createDeferredEntity());
+    //     enemy.addComponent<Transform>(Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
+    //     enemy.addComponent<Velocity>(Vector2D(0, -1), 100.0f);
+    //
+    //     const auto& enemyAnimation = AssetManager::getAnimation("enemy");
+    //     enemy.addComponent<Animation>(enemyAnimation);
+    //
+    //     SDL_Texture* enemyTexture = TextureManager::load("../asset/animations/character/Basic_Charakter_Actions.png");
+    //     SDL_FRect enemySrc { 0, 0, 32, 32 };
+    //     SDL_FRect enemyDest { spawnerTransform.position.x, spawnerTransform.position.y, 32, 32 };
+    //     enemy.addComponent<Sprite>(enemyTexture, enemySrc, enemyDest);
+    //
+    //     auto& c = enemy.addComponent<Collider>("projectile");
+    //     c.rect.w = enemyDest.w;
+    //     c.rect.h = enemyDest.h;
+    //
+    //     enemy.addComponent<ProjectileTag>();
+    // });
 
     // Add scene state
     auto& state(world.createEntity());
     state.addComponent<SceneState>();
+}
+
+Entity& Scene::createSettingsOverlay(const int windowWidth, const int windowHeight) {
+    auto& overlay(world.createEntity());
+
+    SDL_Texture *overlayTexture = TextureManager::load("../asset/ui/settings_menu.png");
+    SDL_FRect overlaySrc { 0, 0, static_cast<float>(windowWidth) * 0.85f, static_cast<float>(windowHeight) * 0.85f };
+    SDL_FRect overlayDest{ static_cast<float>(windowWidth) / 2.0f - overlaySrc.w / 2.0f, static_cast<float>(windowHeight) / 2.0f - overlaySrc.h / 2.0f, overlaySrc.w, overlaySrc.h };
+
+    overlay.addComponent<Transform>(Vector2D(overlayDest.x, overlayDest.y), 0.0f, 1.0f);
+    overlay.addComponent<Sprite>(overlayTexture, overlaySrc, overlayDest, RenderLayer::UI, false);
+
+    createSettingsUIComponents(overlay);
+
+    return overlay;
+}
+
+Entity& Scene::createCogButton(const int windowWidth, const int windowHeight, Entity& overlay) {
+    auto& cog(world.createEntity());
+    auto& cogTransform = cog.addComponent<Transform>(Vector2D(static_cast<float>(windowWidth - 50), static_cast<float>(windowHeight - 50)), 0.0f, 1.0f);
+
+    SDL_Texture *texture = TextureManager::load("../asset/ui/Catpaw_holding_Mouse_icon.png");
+    SDL_FRect cogSrc { 0, 0, 32, 32 };
+    SDL_FRect cogDest { cogTransform.position.x, cogTransform.position.y, cogSrc.w, cogSrc.h };
+
+    cog.addComponent<Sprite>(texture, cogSrc, cogDest);
+    cog.addComponent<Collider>("ui", cogDest);
+
+    auto& clickable = cog.addComponent<Clickable>();
+
+    clickable.onPressed = [&cogTransform] {
+        cogTransform.scale = 0.5f;
+    };
+
+    clickable.onReleased = [&cogTransform, &overlay] {
+        cogTransform.scale = 1.0f;
+        toggleSettingsOverlayVisibility(overlay);
+    };
+
+    clickable.onCancel = [&cogTransform] {
+        cogTransform.scale = 1.0f;
+    };
+
+    return cog;
+}
+
+void Scene::createSettingsUIComponents(Entity& overlay) {
+    if (!overlay.hasComponent<Children>()) {
+        overlay.addComponent<Children>();
+    }
+
+    const auto& overlayTransform = overlay.getComponent<Transform>();
+    const auto& overlaySprite = overlay.getComponent<Sprite>();
+
+    const float baseX = overlayTransform.position.x;
+    const float baseY = overlayTransform.position.y;
+
+    auto& closeButton(world.createEntity());
+    auto& closeTransform = closeButton.addComponent<Transform>(Vector2D(baseX + overlaySprite.dst.w - 40, baseY + 10), 0.0f, 1.0f);
+
+    SDL_Texture *texture = TextureManager::load("../asset/ui/Catpaw_Mouse_icon.png");
+    SDL_FRect closeSrc { 0, 0, 32, 32 };
+    SDL_FRect closeDest { closeTransform.position.x, closeTransform.position.y, closeSrc.w, closeSrc.h };
+
+    closeButton.addComponent<Sprite>(texture, closeSrc, closeDest, RenderLayer::UI, false);
+    closeButton.addComponent<Collider>("ui", closeDest);
+
+    auto& clickable = closeButton.addComponent<Clickable>();
+
+    clickable.onPressed = [&closeTransform] {
+        closeTransform.scale = 0.5f;
+    };
+
+    clickable.onReleased = [&overlay, &closeTransform] {
+        closeTransform.scale = 1.0f;
+        toggleSettingsOverlayVisibility(overlay);
+    };
+
+    clickable.onCancel = [&closeTransform] {
+        closeTransform.scale = 1.0f;
+    };
+
+    closeButton.addComponent<Parent>(&overlay);
+
+    auto& parentChildren = overlay.addComponent<Children>();
+    parentChildren.children.push_back(&closeButton);
+}
+
+void Scene::toggleSettingsOverlayVisibility(Entity& overlay) {
+    auto& sprite = overlay.getComponent<Sprite>();
+    const bool newVisibility = !sprite.visible;
+    sprite.visible = newVisibility;
+
+    if (overlay.hasComponent<Children>()) {
+        auto& c = overlay.getComponent<Children>();
+
+        for (const auto& child : c.children) {
+            if (child && child->hasComponent<Sprite>()) {
+                child->getComponent<Sprite>().visible = newVisibility;
+            }
+
+            if (child && child->hasComponent<Collider>()) {
+                child->getComponent<Collider>().enabled = newVisibility;
+            }
+        }
+    }
 }

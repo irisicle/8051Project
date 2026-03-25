@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-02-22.
 //
 
-#ifndef INC_8051TUTORIAL_CAMERASYSTEM_H
-#define INC_8051TUTORIAL_CAMERASYSTEM_H
+#ifndef INC_8051PROJECT_CAMERASYSTEM_H
+#define INC_8051PROJECT_CAMERASYSTEM_H
 #include <vector>
 
 #include "../Component.h"
@@ -46,4 +46,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_CAMERASYSTEM_H
+#endif //INC_8051PROJECT_CAMERASYSTEM_H

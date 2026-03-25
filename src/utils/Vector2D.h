@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-28.
 //
 
-#ifndef INC_8051TUTORIAL_VECTOR2D_H
-#define INC_8051TUTORIAL_VECTOR2D_H
+#ifndef INC_8051PROJECT_VECTOR2D_H
+#define INC_8051PROJECT_VECTOR2D_H
 
 class Vector2D {
 public:
@@ -40,4 +40,4 @@ public:
 
 };
 
-#endif //INC_8051TUTORIAL_VECTOR2D_H
+#endif //INC_8051PROJECT_VECTOR2D_H

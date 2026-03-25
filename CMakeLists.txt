@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(8051Tutorial)
+project(8051Project)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,11 +12,10 @@ set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/sdl3")
 find_package(SDL3 REQUIRED)
 find_package(SDL3_Image REQUIRED)
 
-add_executable(8051Tutorial src/main.cpp
+add_executable(8051Project src/main.cpp
         src/Game.cpp
         src/manager/TextureManager.cpp
-        src/Map.cpp
-        src/GameObject.cpp
+        src/map/Map.cpp
         src/utils/Vector2D.cpp
         src/utils/Collision.cpp
         src/ecs/system/CollisionSystem.cpp
@@ -24,7 +23,8 @@ add_executable(8051Tutorial src/main.cpp
         src/manager/AssetManager.cpp
         src/scene/Scene.cpp
         src/ecs/system/EventResponseSystem.cpp
-        src/ecs/system/MainMenuSystem.cpp)
+        src/ecs/system/MainMenuSystem.cpp
+        src/ecs/system/MouseInputSystem.cpp)
 
-target_link_libraries(8051Tutorial SDL3::SDL3
+target_link_libraries(8051Project SDL3::SDL3
 SDL3_image::SDL3_image)

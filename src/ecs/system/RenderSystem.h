@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-21.
 //
 
-#ifndef INC_8051TUTORIAL_RENDERSYSTEM_H
-#define INC_8051TUTORIAL_RENDERSYSTEM_H
+#ifndef INC_8051PROJECT_RENDERSYSTEM_H
+#define INC_8051PROJECT_RENDERSYSTEM_H
 #include <memory>
 #include <vector>
 
@@ -12,7 +12,6 @@
 #include "../../manager/TextureManager.h"
 
 class RenderSystem {
-
 public:
     static void render(const std::vector<std::unique_ptr<Entity>>& entities) {
 
@@ -34,6 +33,8 @@ public:
                 const auto& transform = entity->getComponent<Transform>();
                 auto& sprite = entity->getComponent<Sprite>();
 
+                if (sprite.renderLayer != RenderLayer::World) continue;
+
                 // Converting from world space to screen space
                 sprite.dst.x = transform.position.x - camera.view.x;
                 sprite.dst.y = transform.position.y - camera.view.y;
@@ -50,4 +51,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_RENDERSYSTEM_H
+#endif //INC_8051PROJECT_RENDERSYSTEM_H

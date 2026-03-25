@@ -16,15 +16,38 @@ EventResponseSystem::EventResponseSystem(World& world) {
         onCollision(collision, "item", world);
         onCollision(collision, "wall", world);
         onCollision(collision, "projectile", world);
-
     });
 
     world.getEventManager().subscribe([this, &world](const BaseEvent& event) {
         if (event.type != EventType::PlayerAction) return;
         const auto& playerAction = dynamic_cast<const PlayerActionEvent&>(event);
-
-
     });
+
+    world.getEventManager().subscribe([this, &world](const BaseEvent& event) {
+        if (event.type != EventType::MouseInteraction) return;
+        const auto& mouseInteractionEvent = dynamic_cast<const MouseInteractionEvent&>(event);
+        onMouseInteraction(mouseInteractionEvent);
+    });
+}
+
+void EventResponseSystem::onMouseInteraction(const MouseInteractionEvent& event) {
+    if (!event.entity->hasComponent<Clickable>()) return;
+
+    const auto& clickable = event.entity->getComponent<Clickable>();
+
+    switch (event.state) {
+        case MouseInteractionState::Pressed:
+            clickable.onPressed();
+            break;
+        case MouseInteractionState::Released:
+            clickable.onReleased();
+            break;
+        case MouseInteractionState::Cancel:
+            clickable.onCancel();
+            break;
+        default:
+            break;
+    }
 }
 
 void EventResponseSystem::onCollision(const CollisionEvent& event, const char* otherTag, World& world) {

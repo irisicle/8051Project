@@ -2,12 +2,12 @@
 // Created by Iris Chow on 2026-01-21.
 //
 
-#ifndef INC_8051TUTORIAL_WORLD_H
-#define INC_8051TUTORIAL_WORLD_H
+#ifndef INC_8051PROJECT_WORLD_H
+#define INC_8051PROJECT_WORLD_H
 #include <memory>
 #include <vector>
 
-#include "../Map.h"
+#include "../map/Map.h"
 #include "event/EventManager.h"
 #include "system/AnimationSystem.h"
 #include "system/CameraSystem.h"
@@ -20,6 +20,8 @@
 #include "system/SpawnTimerSystem.h"
 #include "../scene/SceneType.h"
 #include "system/MainMenuSystem.h"
+#include "system/MouseInputSystem.h"
+#include "system/UIRenderSystem.h"
 
 class World {
     Map map;
@@ -36,6 +38,8 @@ class World {
     DestructionSystem destructionSystem;
     EventResponseSystem eventResponseSystem{*this};
     MainMenuSystem mainMenuSystem;
+    UIRenderSystem uiRenderSystem;
+    MouseInputSystem mouseInputSystem;
 
 public:
     World() = default;
@@ -54,6 +58,8 @@ public:
             DestructionSystem::update(entities);
         }
 
+        MouseInputSystem::update(*this, event);
+
         synchronizeEntities();
         cleanUp();
     }
@@ -65,7 +71,9 @@ public:
                 break;
             }
         }
+
         RenderSystem::render(entities);
+        UIRenderSystem::render(entities);
     }
 
     Entity& createEntity() {
@@ -113,4 +121,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_WORLD_H
+#endif //INC_8051PROJECT_WORLD_H

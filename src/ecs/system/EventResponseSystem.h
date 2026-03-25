@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-03-04.
 //
 
-#ifndef INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
-#define INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
+#ifndef INC_8051PROJECT_EVENTRESPONSESYSTEM_H
+#define INC_8051PROJECT_EVENTRESPONSESYSTEM_H
 #include <functional>
 
 #include "../event/BaseEvent.h"
@@ -21,8 +21,9 @@ private:
   static bool getCollisionEntities(const CollisionEvent& event, const char* otherTag, Entity*& player, Entity*& other);
 
   // Player action
-  static void onPlayerAction(const PlayerActionEvent& event,
-    const std::function<void(Entity* player, PlayerAction action)>& callback);
+  static void onPlayerAction(const PlayerActionEvent& event, const std::function<void(Entity* player, PlayerAction action)>& callback);
+
+  static void onMouseInteraction(const MouseInteractionEvent& event);
 };
 
-#endif //INC_8051TUTORIAL_EVENTRESPONSESYSTEM_H
+#endif //INC_8051PROJECT_EVENTRESPONSESYSTEM_H

@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-21.
 //
 
-#ifndef INC_8051TUTORIAL_COMPONENTTYPE_H
-#define INC_8051TUTORIAL_COMPONENTTYPE_H
+#ifndef INC_8051PROJECT_COMPONENTTYPE_H
+#define INC_8051PROJECT_COMPONENTTYPE_H
 
 // Creating a type alias for std:size_t
 // size_t is designed to represent sizes and indices because its unsigned and its very large (long, long).
@@ -30,4 +30,4 @@ ComponentTypeID getComponentTypeID() {
     return typeID;
 }
 
-#endif //INC_8051TUTORIAL_COMPONENTTYPE_H
+#endif //INC_8051PROJECT_COMPONENTTYPE_H

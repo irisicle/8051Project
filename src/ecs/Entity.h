@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-21.
 //
 
-#ifndef INC_8051TUTORIAL_ENTITY_H
-#define INC_8051TUTORIAL_ENTITY_H
+#ifndef INC_8051PROJECT_ENTITY_H
+#define INC_8051PROJECT_ENTITY_H
 #include <bitset>
 #include <array>
 
@@ -69,4 +69,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_ENTITY_H
+#endif //INC_8051PROJECT_ENTITY_H

@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-14.
 //
 
-#ifndef INC_8051TUTORIAL_TEXTUREMANAGER_H
-#define INC_8051TUTORIAL_TEXTUREMANAGER_H
+#ifndef INC_8051PROJECT_TEXTUREMANAGER_H
+#define INC_8051PROJECT_TEXTUREMANAGER_H
 #include <unordered_map>
 
 #include "SDL3_image/SDL_image.h"
@@ -18,4 +18,4 @@ public:
     static void clean();
 };
 
-#endif //INC_8051TUTORIAL_TEXTUREMANAGER_H
+#endif //INC_8051PROJECT_TEXTUREMANAGER_H

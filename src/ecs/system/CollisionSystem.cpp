@@ -17,9 +17,9 @@ void CollisionSystem::update(World& world) {
     // Update all collider positions first
     for (const auto entity : collidables) {
         const auto& transform = entity->getComponent<Transform>();
-        auto&[tag, rect] = entity->getComponent<Collider>();
-        rect.x = transform.position.x;
-        rect.y = transform.position.y;
+        auto& c = entity->getComponent<Collider>();
+        c.rect.x = transform.position.x;
+        c.rect.y = transform.position.y;
     }
 
     // Outer loop

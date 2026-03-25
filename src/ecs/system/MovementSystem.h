@@ -2,8 +2,8 @@
 // Created by Iris Chow on 2026-01-21.
 //
 
-#ifndef INC_8051TUTORIAL_MOVEMENTSYSTEM_H
-#define INC_8051TUTORIAL_MOVEMENTSYSTEM_H
+#ifndef INC_8051PROJECT_MOVEMENTSYSTEM_H
+#define INC_8051PROJECT_MOVEMENTSYSTEM_H
 #include <memory>
 #include <vector>
 
@@ -36,4 +36,4 @@ public:
     }
 };
 
-#endif //INC_8051TUTORIAL_MOVEMENTSYSTEM_H
+#endif //INC_8051PROJECT_MOVEMENTSYSTEM_H

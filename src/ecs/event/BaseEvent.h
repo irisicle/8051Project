@@ -2,14 +2,15 @@
 // Created by Iris Chow on 2026-03-04.
 //
 
-#ifndef INC_8051TUTORIAL_BASEEVENT_H
-#define INC_8051TUTORIAL_BASEEVENT_H
+#ifndef INC_8051PROJECT_BASEEVENT_H
+#define INC_8051PROJECT_BASEEVENT_H
 
 class Entity;
 
 enum class EventType {
     Collision,
     PlayerAction,
+    MouseInteraction,
 };
 
 enum class CollisionState {
@@ -23,6 +24,12 @@ enum class PlayerAction {
     Interact,
     Use,
     Jump,
+};
+
+enum class MouseInteractionState {
+    Pressed,
+    Released,
+    Cancel,
 };
 
 struct BaseEvent {
@@ -47,4 +54,12 @@ struct PlayerActionEvent : BaseEvent {
     }
 };
 
-#endif //INC_8051TUTORIAL_BASEEVENT_H
+struct MouseInteractionEvent : BaseEvent {
+    Entity* entity = nullptr;
+    MouseInteractionState state{};
+    MouseInteractionEvent(Entity* entity, const MouseInteractionState state) : entity(entity), state(state) {
+        type = EventType::MouseInteraction;
+    }
+};
+
+#endif //INC_8051PROJECT_BASEEVENT_H
