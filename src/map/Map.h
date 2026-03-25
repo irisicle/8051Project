@@ -24,7 +24,8 @@ public:
     [[nodiscard]] const Tileset* getTilesetFromGid(int gid) const;
 
     std::vector<Tileset>tilesets;
-    std::vector<std::vector<int>> tileData;
+    std::vector<std::vector<std::vector<int>>> layers;
+    //std::vector<std::vector<int>> tileData;
     std::vector<Collider> colliders;
     std::vector<SpawnPoint> spawnPoints;
 };

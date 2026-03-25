@@ -88,9 +88,9 @@ void Scene::initGameplay(const char* mapPath, const int windowWidth, const int w
     auto animation = AssetManager::getAnimation("player");
     player.addComponent<Animation>(animation);
 
-    SDL_Texture* playerTexture = TextureManager::load("../asset/animations/character/Basic_Charakter_Spritesheet.png");
+    SDL_Texture* playerTexture = TextureManager::load("../asset/animations/character/player_spritesheet.png");
     SDL_FRect playerSrc = animation.clips[animation.currentClip].frameIndices[0];
-    SDL_FRect playerDest { playerTransform.position.x, playerTransform.position.y, 32, 32 }; // Size of the sprite
+    SDL_FRect playerDest { playerTransform.position.x, playerTransform.position.y, 64, 64 }; // Size of the sprite
 
     player.addComponent<Sprite>(playerTexture, playerSrc, playerDest);
 
@@ -115,7 +115,7 @@ void Scene::initGameplay(const char* mapPath, const int windowWidth, const int w
     //     const auto& enemyAnimation = AssetManager::getAnimation("enemy");
     //     enemy.addComponent<Animation>(enemyAnimation);
     //
-    //     SDL_Texture* enemyTexture = TextureManager::load("../asset/animations/character/Basic_Charakter_Actions.png");
+    //     SDL_Texture* enemyTexture = TextureManager::load("../asset/animations/character/player_actions.png");
     //     SDL_FRect enemySrc { 0, 0, 32, 32 };
     //     SDL_FRect enemyDest { spawnerTransform.position.x, spawnerTransform.position.y, 32, 32 };
     //     enemy.addComponent<Sprite>(enemyTexture, enemySrc, enemyDest);

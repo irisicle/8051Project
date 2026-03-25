@@ -25,6 +25,5 @@
     </walk_right>
     <idle>
         <frame x="0" y="0" w="32" h="32" />
-        <frame x="48" y="0" w="32" h="32" />
     </idle>
 </animations>
