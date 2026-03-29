@@ -14,11 +14,13 @@ const Tileset* Map::getTilesetFromGid(const int gid) const {
             return &tilesets[i];
         }
     }
+
     return nullptr;
 }
 
 void Map::load(const char* path) {
     tilesets.clear();
+    layers.clear();
 
     tinyxml2::XMLDocument doc;
     doc.LoadFile(path);
@@ -30,15 +32,17 @@ void Map::load(const char* path) {
 
     std::cout << "Loaded map: " << width << "x" << height << std::endl;
 
-    for (auto* ts = mapNode->FirstChildElement("tileset"); ts != nullptr; ts = ts->NextSiblingElement("tileset")) {
+    for (auto* ts = mapNode->FirstChildElement( "tileset"); ts != nullptr; ts = ts->NextSiblingElement("tileset")) {
         Tileset tileset{};
         tileset.firstGid = ts->IntAttribute("firstgid");
         const char* source = ts->Attribute("source");
 
         // Load TSX
         tinyxml2::XMLDocument tsx;
-        if (tsx.LoadFile(source) != tinyxml2::XML_SUCCESS) {
-            std::cerr << "Failed to load tsx from: " << tsx.ErrorStr() << std::endl;
+        std::string fullPath = std::string("../asset/") + source;
+
+        if (tsx.LoadFile(fullPath.c_str()) != tinyxml2::XML_SUCCESS) {
+            std::cerr << "Failed to load tsx from: " << source << std::endl;
             continue;
         }
 
@@ -54,8 +58,9 @@ void Map::load(const char* path) {
         tileset.columns = tsxNode->IntAttribute("columns");
         tileset.tileCount = tsxNode->IntAttribute("tilecount");
 
-        const char* imgPath = tsxNode->FirstChildElement("image")->Attribute("source");
-        tileset.texture = TextureManager::load(imgPath);
+        const char* imgSrc = tsxNode->FirstChildElement("image")->Attribute("source");
+        std::string imgPath = std::string("../asset/tilesets/") + imgSrc;
+        tileset.texture = TextureManager::load(imgPath.c_str());
 
         tilesets.push_back(tileset);
     }
@@ -78,6 +83,42 @@ void Map::load(const char* path) {
         }
 
         layers.push_back(tileData);
+
+        // Parse collider data
+        for (auto* objectGroup = layer->NextSiblingElement("objectgroup"); objectGroup != nullptr; objectGroup = objectGroup->NextSiblingElement("objectgroup")) {
+            const char* name = objectGroup->Attribute("name");
+
+            // Create a for-loop with initialization, condition and an increment
+            for (auto* object = objectGroup->FirstChildElement("object"); object != nullptr; object = object->NextSiblingElement("object")) {
+                if (name != nullptr) {
+                    if (std::string(name) == "Collision Layer") {
+                        Collider collider;
+                        collider.rect.x = object->FloatAttribute("x");
+                        collider.rect.y = object->FloatAttribute("y");
+                        collider.rect.w = object->FloatAttribute("width");
+                        collider.rect.h = object->FloatAttribute("height");
+
+                        colliders.push_back(collider);
+                    }
+
+                    if (std::string(name) == "Bed Layer") {
+                        SavePoint savePoint;
+                        savePoint.position.x = object->FloatAttribute("x");
+                        savePoint.position.y = object->FloatAttribute("y");
+
+                        savePoints.push_back(savePoint);
+                    }
+
+                    else if (std::string(name) == "Cow Layer") {
+                        SpawnPoint spawnPoint;
+                        spawnPoint.position.x = object->FloatAttribute("x");
+                        spawnPoint.position.y = object->FloatAttribute("y");
+
+                        spawnPoints.push_back(spawnPoint);
+                    }
+                }
+            }
+        }
     }
 }
 

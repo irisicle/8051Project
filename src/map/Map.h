@@ -11,7 +11,6 @@
 #include "Tileset.h"
 
 class Map {
-
 public:
     Map() = default;
     ~Map() = default;
@@ -25,8 +24,8 @@ public:
 
     std::vector<Tileset>tilesets;
     std::vector<std::vector<std::vector<int>>> layers;
-    //std::vector<std::vector<int>> tileData;
     std::vector<Collider> colliders;
+    std::vector<SavePoint> savePoints;
     std::vector<SpawnPoint> spawnPoints;
 };
 

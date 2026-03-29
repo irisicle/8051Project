@@ -12,7 +12,6 @@
 // Check if the animation has been switched
 // Playback system: Advances the animation
 class AnimationSystem {
-
 public:
     static void update(const std::vector<std::unique_ptr<Entity>>& entities, const float deltaTime) {
         for (auto& entity : entities) {

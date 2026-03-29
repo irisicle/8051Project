@@ -32,6 +32,10 @@ public:
                         case SDLK_A:
                             direction.x = -1;
                             break;
+                        case SDLK_F:
+                            direction.x = 3;
+                            direction.y = -1;
+                            break;
                         default:
                             break;
                     }

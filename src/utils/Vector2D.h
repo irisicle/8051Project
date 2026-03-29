@@ -14,6 +14,7 @@ public:
         x = 0.0f;
         y = 0.0f;
     }
+
     Vector2D(const float x, const float y) : x(x), y(y) {}
 
     // Member operator function (*)

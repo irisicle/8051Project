@@ -1,0 +1,7 @@
+<animations>
+    <idle>
+        <frame x="32" y="32" w="32" h="32" />
+        <frame x="64" y="32" w="32" h="32" />
+        <frame x="96" y="32" w="32" h="32" />
+    </idle>
+</animations>

@@ -13,7 +13,7 @@ find_package(SDL3 REQUIRED)
 find_package(SDL3_Image REQUIRED)
 
 add_executable(8051Project src/main.cpp
-        src/Game.cpp
+        src/game/Game.cpp
         src/manager/TextureManager.cpp
         src/map/Map.cpp
         src/utils/Vector2D.cpp

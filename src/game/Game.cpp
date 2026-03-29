@@ -7,7 +7,7 @@
 #include <ostream>
 #include <random>
 
-#include "manager/AssetManager.h"
+#include "../manager/AssetManager.h"
 
 GameState Game::gameState{};
 std::function<void(std::string)> Game::onSceneChangeRequest;
@@ -54,7 +54,8 @@ void Game::init(
     }
 
     // Load assets
-    AssetManager::loadAnimation("player", "../asset/animations/player_animations.xml");
+    AssetManager::loadAnimation("player", "../asset/animations/character/player_animations.xml");
+    AssetManager::loadAnimation("cow", "../asset/animations/animals/cow_animations.xml");
 
     // Load scenes
     sceneManager.loadScene(SceneType::MainMenu, "mainmenu", nullptr, width, height);

@@ -3,7 +3,7 @@
 //
 
 #include "MainMenuSystem.h"
-#include "../../Game.h"
+#include "../../game/Game.h"
 
 void MainMenuSystem::update(const SDL_Event& event) {
     if (event.type == SDL_EVENT_KEY_DOWN) {

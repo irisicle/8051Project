@@ -4,17 +4,17 @@
 
 #include "EventResponseSystem.h"
 #include "../World.h"
-#include "../../Game.h"
+#include "../../game/Game.h"
 
 EventResponseSystem::EventResponseSystem(World& world) {
 
     // Subscriptions
-    world.getEventManager().subscribe([this, &world](const BaseEvent& event) {
+    world.getEventManager().subscribe([&world](const BaseEvent& event) {
         if (event.type != EventType::Collision) return;
         const auto& collision = dynamic_cast<const CollisionEvent&>(event); // Cast base type to collision type
 
         onCollision(collision, "item", world);
-        onCollision(collision, "wall", world);
+        onCollision(collision, "water", world);
         onCollision(collision, "projectile", world);
     });
 
@@ -28,6 +28,11 @@ EventResponseSystem::EventResponseSystem(World& world) {
         const auto& mouseInteractionEvent = dynamic_cast<const MouseInteractionEvent&>(event);
         onMouseInteraction(mouseInteractionEvent);
     });
+}
+
+void EventResponseSystem::onPlayerAction(const PlayerActionEvent &event, const std::function<void(Entity* player, PlayerAction action)>& callback) {
+
+
 }
 
 void EventResponseSystem::onMouseInteraction(const MouseInteractionEvent& event) {
@@ -74,7 +79,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& event, const char* o
         }
     }
 
-    else if (std::string(otherTag) == "wall") {
+    else if (std::string(otherTag) == "water") {
         if (event.state != CollisionState::Stay) return;
 
         // Stop the player

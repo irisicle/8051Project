@@ -46,6 +46,10 @@ struct Collider {
     bool enabled = true;
 };
 
+struct SavePoint {
+    Vector2D position{};
+};
+
 struct SpawnPoint {
     Vector2D position{};
 };
@@ -95,6 +99,7 @@ struct Children {
 };
 
 struct PlayerTag{};
+struct InteractableTag{};
 struct ProjectileTag{};
 
 #endif //INC_8051PROJECT_COMPONENT_H

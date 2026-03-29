@@ -7,7 +7,7 @@
 #include <ostream>
 #include <ranges>
 
-#include "../Game.h"
+#include "../game/Game.h"
 
 // Doesn't create any extra memory, just grabs the reference of this object
 extern Game* game;

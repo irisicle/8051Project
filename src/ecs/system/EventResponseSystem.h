@@ -22,7 +22,6 @@ private:
 
   // Player action
   static void onPlayerAction(const PlayerActionEvent& event, const std::function<void(Entity* player, PlayerAction action)>& callback);
-
   static void onMouseInteraction(const MouseInteractionEvent& event);
 };
 

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Game.h"
+#include "game/Game.h"
 
 // Global variable
 Game *game = nullptr;

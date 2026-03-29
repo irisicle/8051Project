@@ -10,8 +10,8 @@
 #pragma once
 #include <SDL3/SDL.h>
 
-#include "ecs/World.h"
-#include "manager/SceneManager.h"
+#include "../ecs/World.h"
+#include "../manager/SceneManager.h"
 
 struct GameState{
     int playerHealth;

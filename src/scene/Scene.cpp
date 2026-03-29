@@ -2,7 +2,7 @@
 // Created by Iris Chow on 2026-02-25.
 //
 #include "Scene.h"
-#include "../Game.h"
+#include "../game/Game.h"
 #include "../manager/AssetManager.h"
 
 Scene::Scene(
@@ -45,16 +45,16 @@ void Scene::initGameplay(const char* mapPath, const int windowWidth, const int w
     // Load map
     world.getMap().load(mapPath);
 
-    // // Create wall colliders
-    // for (const auto& collider : world.getMap().colliders) {
-    //     auto& entity = world.createEntity();
-    //     entity.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
-    //     auto& c = entity.addComponent<Collider>("wall");
-    //     c.rect.x = collider.rect.x;
-    //     c.rect.y = collider.rect.y;
-    //     c.rect.w = collider.rect.w;
-    //     c.rect.h = collider.rect.h;
-    // }
+    // Create colliders
+    for (const auto& collider : world.getMap().colliders) {
+        auto& water(world.createEntity());
+        water.addComponent<Transform>(Vector2D(collider.rect.x * 2.0f, collider.rect.y * 2.0f), 0.0f, 1.0f);
+        auto& c = water.addComponent<Collider>("water");
+        c.rect.x = collider.rect.x;
+        c.rect.y = collider.rect.y;
+        c.rect.w = collider.rect.w;
+        c.rect.h = collider.rect.h;
+    }
 
     // Add entities
     auto& cam(world.createEntity());
@@ -63,27 +63,40 @@ void Scene::initGameplay(const char* mapPath, const int windowWidth, const int w
     camView.h = static_cast<float>(windowHeight);
     cam.addComponent<Camera>(camView, world.getMap().width * 32, world.getMap().height * 32);
 
-    // // Create item spawn points
-    // for (const auto& point : world.getMap().spawnPoints) {
-    //     auto& item = world.createEntity();
-    //     const auto& itemTransform = item.addComponent<Transform>(Vector2D(point.position.x, point.position.y), 0.0f, 1.0f);
-    //
-    //     SDL_Texture* itemTexture = TextureManager::load("../asset/coin.png");
-    //     SDL_FRect itemSrc { 0, 0, 32, 32 };
-    //     SDL_FRect itemDest { itemTransform.position.x, itemTransform.position.y, 32, 32 };
-    //
-    //     // Import coin sprite
-    //     item.addComponent<Sprite>(itemTexture, itemSrc, itemDest);
-    //     auto& c = item.addComponent<Collider>("item");
-    //     c.rect.w = itemDest.w;
-    //     c.rect.h = itemDest.h;
-    // }
+    // Create save point (bed)
+    for (const auto& p : world.getMap().savePoints) {
+        auto& bed = world.createEntity();
+        const auto& bedTransform = bed.addComponent<Transform>(Vector2D(p.position.x, p.position.y), 0.0f, 1.0f);
+
+        SDL_Texture* bedTexture = TextureManager::load("../asset/objects/furniture.png");
+        SDL_FRect bedSrc { 24, 24, 24, 24 };
+        SDL_FRect bedDest { bedTransform.position.x, bedTransform.position.y, 48, 48 };
+        bed.addComponent<Sprite>(bedTexture, bedSrc, bedDest);
+    }
+
+    // Create cows
+    for (const auto& sp : world.getMap().spawnPoints) {
+        auto& cow(world.createEntity());
+        const auto& cowTransform = cow.addComponent<Transform>(Vector2D(sp.position.x, sp.position.y), 0.0f, 1.0f);
+
+        auto& cowAnimation = AssetManager::getAnimation("cow");
+        cow.addComponent<Animation>(cowAnimation);
+
+        SDL_Texture* cowTexture = TextureManager::load("../asset/animations/animals/cow.png");
+        SDL_FRect cowSrc { 32, 32, 32, 32 };
+        SDL_FRect cowDest { cowTransform.position.x, cowTransform.position.y, 64, 64 };
+        cow.addComponent<Sprite>(cowTexture, cowSrc, cowDest);
+
+        auto& c = cow.addComponent<Collider>("cow");
+        c.rect.w = cowDest.w;
+        c.rect.h = cowDest.h;
+    }
 
     // Create player
     auto& player(world.createEntity());
-    const auto& playerTransform = player.addComponent<Transform>(Vector2D(0, 0), 0.0f, 1.0f);
+    const auto& playerTransform = player.addComponent<Transform>(Vector2D(140, 80), 0.0f, 1.0f);
 
-    player.addComponent<Velocity>(Vector2D(10.0f, 20.0f), 120.0f);
+    player.addComponent<Velocity>(Vector2D(0.0f, 0.0f), 120.0f);
 
     auto animation = AssetManager::getAnimation("player");
     player.addComponent<Animation>(animation);
@@ -101,6 +114,21 @@ void Scene::initGameplay(const char* mapPath, const int windowWidth, const int w
     player.addComponent<Health>(Game::gameState.playerHealth);
 
     player.addComponent<PlayerTag>();
+
+    // // Create table
+    // for (const auto& c : world.getMap().colliders) {
+    //     auto& table = world.createEntity();
+    //     const auto& tableTransform = table.addComponent<Transform>(Vector2D(c.rect.x, c.rect.y), 0.0f, 1.0f);
+    //     auto& collider = table.addComponent<Collider>("table");
+    //     collider.rect.x = c.rect.x;
+    //     collider.rect.y = c.rect.y;
+    //
+    //     SDL_Texture* tableTexture = TextureManager::load("../asset/objects/furniture.png");
+    //     SDL_FRect tableSrc { 48, 48, 32, 32 };
+    //     SDL_FRect tableDest { tableTransform.position.x, tableTransform.position.y, 48, 48 };
+    //
+    //     table.addComponent<Sprite>(tableTexture, tableSrc, tableDest);
+    // }
 
     // // Create spawner
     // auto& spawner(world.createEntity());

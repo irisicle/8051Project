@@ -10,26 +10,26 @@ class Entity;
 enum class EventType {
     Collision,
     PlayerAction,
-    MouseInteraction,
+    MouseInteraction
 };
 
 enum class CollisionState {
     Enter,
     Stay,
-    Exit,
+    Exit
 };
 
 enum class PlayerAction {
-    Attack,
-    Interact,
-    Use,
-    Jump,
+    Till,
+    Plant,
+    Water,
+    Harvest
 };
 
 enum class MouseInteractionState {
     Pressed,
     Released,
-    Cancel,
+    Cancel
 };
 
 struct BaseEvent {
@@ -49,6 +49,7 @@ struct CollisionEvent : BaseEvent {
 struct PlayerActionEvent : BaseEvent {
     Entity* player = nullptr;
     PlayerAction action{};
+    int gridX{}, gridY{};
     PlayerActionEvent(Entity* player, const PlayerAction action) : player(player), action(action) {
         type = EventType::PlayerAction;
     }
