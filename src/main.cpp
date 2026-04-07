@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include "game/Game.h"
+#include "utils/Constants.h"
 
 // Global variable
 Game *game = nullptr;
@@ -13,7 +12,7 @@ int main() {
     float deltaTime = 0.0f;
 
     game = new Game();
-    game->init("8051 PROJECT Engine", 800, 600, false);
+    game->init("8051 PROJECT Engine", Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT, false);
 
     // Game loop
     while (game->running()) {
@@ -36,28 +35,6 @@ int main() {
 
     // Clean up pointer
     delete game;
-
-    // Assignment 4
-    // Vector2D a(3, 4);
-    // Vector2D b(1, 2);
-    //
-    // a += b;
-    // std::cout << "a" << " = (" << a.x << ", " << a.y << ")\n";
-    //
-    // const Vector2D c = a - b;
-    // std::cout << "c" << " = (" << c.x << ", " << c.y << ")\n";
-    //
-    // const Vector2D d = a * 2;
-    // std::cout << "d" << " = (" << d.x << ", " << d.y << ")\n";
-    //
-    // const Vector2D e = 2 * a;
-    // std::cout << "e" << " = (" << e.x << ", " << e.y << ")\n";
-    //
-    // const Vector2D f = -a;
-    // std::cout << "f" << " = (" << f.x << ", " <<f.y << ")\n";
-    //
-    // const bool same = (a == b);
-    // std::cout <<  std::boolalpha << same << "\n";
 
     return 0;
 }

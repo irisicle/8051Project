@@ -23,7 +23,16 @@
         <frame x="96" y="144" w="32" h="32" />
         <frame x="144" y="144" w="32" h="32" />
     </walk_right>
-    <idle>
+    <idle_up>
         <frame x="0" y="0" w="32" h="32" />
-    </idle>
+    </idle_up>
+    <idle_down>
+        <frame x="0" y="48" w="32" h="32" />
+    </idle_down>
+    <idle_left>
+        <frame x="0" y="96" w="32" h="32" />
+    </idle_left>
+    <idle_right>
+        <frame x="0" y="144" w="32" h="32" />
+    </idle_right>
 </animations>

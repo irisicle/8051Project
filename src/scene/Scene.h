@@ -4,11 +4,12 @@
 
 #ifndef INC_8051PROJECT_SCENE_H
 #define INC_8051PROJECT_SCENE_H
-#include <string>
 
+#include <string>
 #include <SDL3/SDL_events.h>
-#include "../ecs/World.h"
+#include "../ecs/core/World.h"
 #include "SceneType.h"
+#include "../map/MapLoader.h"
 
 class Scene {
 public:
@@ -18,27 +19,21 @@ public:
         world.update(deltaTime, event, type);
     }
 
-    void render() const {
-        world.render();
+    void render(SDL_Renderer* renderer) {
+        world.render(renderer);
     }
-
-    World world;
 
     [[nodiscard]] const std::string& getSceneName() const { return name; }
 
 private:
+    World world;
+    MapLoader loader;
+
     std::string name;
     SceneType type;
 
-    // void createProjectile(Vector2D pos, Vector2D dir, int speed);
     void initMainMenu(int windowWidth, int windowHeight);
     void initGameplay(const char* mapPath, int windowWidth, int windowHeight);
-
-    Entity& createSettingsOverlay(int windowWidth, int windowHeight);
-    Entity& createCogButton(int windowWidth, int windowHeight, Entity& overlay);
-
-    void createSettingsUIComponents(Entity& overlay);
-    static void toggleSettingsOverlayVisibility(Entity& overlay);
 };
 
 #endif //INC_8051PROJECT_SCENE_H

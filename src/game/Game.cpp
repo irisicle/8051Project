@@ -8,6 +8,7 @@
 #include <random>
 
 #include "../manager/AssetManager.h"
+#include "../manager/TextureManager.h"
 
 GameState Game::gameState{};
 std::function<void(std::string)> Game::onSceneChangeRequest;
@@ -53,23 +54,28 @@ void Game::init(
         isRunning = false;
     }
 
+    // Load audio
+    audioManager.loadAudio("theme", "../asset/audio/bing_1.wav");
+
+    // SFX after action
+    // world.getAudioEventQueue().push(std::make_unique<AudioEvent>("collect"));
+
     // Load assets
     AssetManager::loadAnimation("player", "../asset/animations/character/player_animations.xml");
     AssetManager::loadAnimation("cow", "../asset/animations/animals/cow_animations.xml");
 
     // Load scenes
-    sceneManager.loadScene(SceneType::MainMenu, "mainmenu", nullptr, width, height);
-    sceneManager.loadScene(SceneType::Gameplay, "level1", "../asset/map.tmx", width, height);
+    sceneManager.loadScene(SceneType::MAIN_MENU, "mainmenu", nullptr, width, height);
+    sceneManager.loadScene(SceneType::GAMEPLAY, "level1", "../asset/map.tmx", width, height);
 
     // Init game data/state
     gameState.playerHealth = 5;
 
-    // Start Level 1
+    // Start gameplay
     sceneManager.changeSceneDeferred("mainmenu");
 
     // Resolve scene callback
     onSceneChangeRequest = [this](const std::string& sceneName) {
-        // Some game state happening here
 
         if (sceneManager.currentScene->getSceneName() == "level2" && sceneName == "level2") {
             std::cout << "You win!" << std::endl;
@@ -122,7 +128,7 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     // Render scene
-    sceneManager.render();
+    sceneManager.render(renderer);
 
     // Swaps the back buffer to the screen
     SDL_RenderPresent(renderer);

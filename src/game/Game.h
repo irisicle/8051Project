@@ -10,8 +10,9 @@
 #pragma once
 #include <SDL3/SDL.h>
 
-#include "../ecs/World.h"
+#include "../ecs/core/World.h"
 #include "../manager/SceneManager.h"
+#include "../manager/AudioManager.h"
 
 struct GameState{
     int playerHealth;
@@ -39,7 +40,9 @@ public:
 
     SDL_Renderer* renderer = nullptr;
 
+    AudioManager audioManager;
     SceneManager sceneManager;
+
     static std::function<void(std::string)> onSceneChangeRequest;
     static GameState gameState;
 
@@ -47,7 +50,7 @@ private:
     int frameCount = 0;
     bool isRunning = false;
 
-    SDL_Window *window = nullptr;
+    SDL_Window* window = nullptr;
     SDL_Event event{};
 
     Uint32 lastColorChangeMs = 0;

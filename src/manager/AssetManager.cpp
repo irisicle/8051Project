@@ -1,6 +1,7 @@
 //
 // Created by Iris Chow on 2026-02-22.
 //
+
 #include "AssetManager.h"
 #include "../vendor/tinyxml2.h"
 
@@ -31,7 +32,7 @@ Animation AssetManager::loadAnimationFromXML(const std::string& path) {
             frameElement->QueryFloatAttribute("y", &rect.y);
             frameElement->QueryFloatAttribute("w", &rect.w);
             frameElement->QueryFloatAttribute("h", &rect.h);
-            clip.frameIndices.push_back(rect);
+            clip.frames.push_back(rect);
         }
         animation.clips[clipName] = clip;
     }

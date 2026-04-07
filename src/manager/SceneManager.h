@@ -44,7 +44,7 @@ public:
     std::unique_ptr<Scene> currentScene;
 
     void loadScene(const SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight) {
-        sceneParams[sceneName] = {sceneType, sceneName, mapPath, windowWidth, windowHeight};
+        sceneParams[sceneName] = { sceneType, sceneName, mapPath, windowWidth, windowHeight };
     }
 
     void changeSceneDeferred(const std::string& name) {
@@ -62,8 +62,8 @@ public:
         }
     }
 
-    void render() const {
-        if (currentScene) currentScene->render();
+    void render(SDL_Renderer* renderer) const {
+        if (currentScene) currentScene->render(renderer);
     }
 };
 

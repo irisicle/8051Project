@@ -6,8 +6,8 @@
 #define INC_8051PROJECT_SCENETYPE_H
 
 enum class SceneType {
-    Gameplay,
-    MainMenu,
+    MAIN_MENU,
+    GAMEPLAY
 };
 
 #endif //INC_8051PROJECT_SCENETYPE_H

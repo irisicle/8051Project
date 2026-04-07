@@ -6,13 +6,12 @@
 #define INC_8051PROJECT_ASSETMANAGER_H
 #include <string>
 #include <unordered_map>
-
-#include "../ecs/Component.h"
+#include "../ecs/component/Animation.h"
 
 class AssetManager {
-
     static std::unordered_map<std::string, Animation> animations;
     static Animation loadAnimationFromXML(const std::string& path);
+
 public:
     static void loadAnimation(const std::string& clipName, const char* path);
     static const Animation& getAnimation(const std::string& clipName);

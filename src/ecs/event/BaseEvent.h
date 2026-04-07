@@ -5,32 +5,10 @@
 #ifndef INC_8051PROJECT_BASEEVENT_H
 #define INC_8051PROJECT_BASEEVENT_H
 
+#include "EventEnums.h"
+#include "../../game/GameplayEnums.h"
+
 class Entity;
-
-enum class EventType {
-    Collision,
-    PlayerAction,
-    MouseInteraction
-};
-
-enum class CollisionState {
-    Enter,
-    Stay,
-    Exit
-};
-
-enum class PlayerAction {
-    Till,
-    Plant,
-    Water,
-    Harvest
-};
-
-enum class MouseInteractionState {
-    Pressed,
-    Released,
-    Cancel
-};
 
 struct BaseEvent {
     EventType type{};
@@ -42,7 +20,7 @@ struct CollisionEvent : BaseEvent {
     Entity* entityB = nullptr;
     CollisionState state{};
     CollisionEvent(Entity* entityA, Entity* entityB, const CollisionState state) : entityA(entityA), entityB(entityB), state(state) {
-        type = EventType::Collision;
+        type = EventType::COLLISION;
     }
 };
 
@@ -50,8 +28,8 @@ struct PlayerActionEvent : BaseEvent {
     Entity* player = nullptr;
     PlayerAction action{};
     int gridX{}, gridY{};
-    PlayerActionEvent(Entity* player, const PlayerAction action) : player(player), action(action) {
-        type = EventType::PlayerAction;
+    PlayerActionEvent(Entity* player, const PlayerAction action, const int x, const int y) : player(player), action(action), gridX(x), gridY(y) {
+        type = EventType::PLAYER_ACTION;
     }
 };
 
@@ -59,7 +37,7 @@ struct MouseInteractionEvent : BaseEvent {
     Entity* entity = nullptr;
     MouseInteractionState state{};
     MouseInteractionEvent(Entity* entity, const MouseInteractionState state) : entity(entity), state(state) {
-        type = EventType::MouseInteraction;
+        type = EventType::MOUSE_INTERACTION;
     }
 };
 
