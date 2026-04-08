@@ -11,5 +11,4 @@ Teeny Farm is a cozy farm sim inspired by Harvest Moon, Stardew Valley and the l
 After inheriting a small farm from your ancestors, your mission is to bring it back to life to the way it was, or better than when your great-grandparents once ran it. Starting with only basic tools and a handful of seeds, you must cultivate crops and rebuild your family's pride and joy one harvest at a time.
 
 **Art Assets**
-- Ideally I would like to draw my own assets but for the sake of time I'll be using a free 2D pixel art asset pack that I found on itch.io:
-	- Asset pack used -  https://cupnooble.itch.io/sprout-lands-asset-pack
+- Asset pack used -  https://cupnooble.itch.io/sprout-lands-asset-pack
