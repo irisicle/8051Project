@@ -9,7 +9,7 @@ class World;
 
 class EventBindings {
 public:
-    static void update(World& world);
+    static void bind(World& world);
 };
 
 #endif //INC_8051PROJECT_EVENTRESPONSESYSTEM_H

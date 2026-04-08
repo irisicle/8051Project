@@ -9,6 +9,7 @@
 #include "../../ecs/component/Physics.h"
 #include "../../ecs/component/Render.h"
 #include "../../ecs/core/World.h"
+#include "../../utils/Constants.h"
 #include "../data/CropVisualDatabase.h"
 #include "../data/ItemDatabase.h"
 

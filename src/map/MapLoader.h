@@ -11,7 +11,7 @@ class World;
 
 class MapLoader {
 public:
-    static MapData load(const char* path, World& world);
+    MapData load(const char* path, World& world);
 };
 
 #endif //INC_8051PROJECT_MAPLOADER_H

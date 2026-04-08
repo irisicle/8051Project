@@ -10,12 +10,11 @@
 #include "TileData.h"
 #include "../ecs/core/World.h"
 #include "../manager/TextureManager.h"
+#include "../utils/Constants.h"
 #include "../vendor/tinyxml2.h"
 
 MapData MapLoader::load(const char* path, World &world) {
     MapData mapData{};
-
-    std::cout << "Loading map \"" << path << "\"" << std::endl;
 
     tinyxml2::XMLDocument doc;
 

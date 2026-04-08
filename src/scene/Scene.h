@@ -7,30 +7,41 @@
 
 #include <string>
 #include <SDL3/SDL_events.h>
+#include "../ecs/core/Camera.h"
 #include "../ecs/core/World.h"
 #include "SceneType.h"
 #include "../map/MapLoader.h"
+#include "../systems/SelectionHighlightSystem.h"
 
 class Scene {
 public:
     Scene(SceneType sceneType, const char* sceneName, const char* mapPath, int windowWidth, int windowHeight);
 
-    void update(const float deltaTime, const SDL_Event& event) {
-        world.update(deltaTime, event, type);
+    void initialize();
+    void update(float deltaTime, const SDL_Event &event);
+    void render(SDL_Renderer *renderer);
+
+    [[nodiscard]] const std::string& getSceneName() const {
+        return name;
     }
 
-    void render(SDL_Renderer* renderer) {
-        world.render(renderer);
+    Camera& getCamera() {
+        return camera;
     }
 
-    [[nodiscard]] const std::string& getSceneName() const { return name; }
+    // const overload
+    [[nodiscard]] const Camera& getCamera() const {
+        return camera;
+    }
 
 private:
-    World world;
-    MapLoader loader;
+    World world{};
+    Camera camera{};
+    MapLoader loader{};
+    SelectionHighlightSystem selectionHighlightSystem{};
 
-    std::string name;
-    SceneType type;
+    std::string name{};
+    SceneType type{};
 
     void initMainMenu(int windowWidth, int windowHeight);
     void initGameplay(const char* mapPath, int windowWidth, int windowHeight);

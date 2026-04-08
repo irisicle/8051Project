@@ -6,7 +6,7 @@
 #include "../ecs/component/Interaction.h"
 #include "../ecs/component/Physics.h"
 #include "../ecs/component/Tag.h"
-#include "../ecs/core/World.h"
+#include "../ecs/core/Camera.h"
 #include "../utils/Constants.h"
 #include "../utils/GridUtils.h"
 

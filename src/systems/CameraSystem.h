@@ -8,42 +8,47 @@
 #include <vector>
 #include "../ecs/component/Tag.h"
 #include "../ecs/core/Entity.h"
-#include "../utils/Constants.h"
+#include "../ecs/core/Camera.h"
 
 class CameraSystem {
 public:
-    static void update(const std::vector<std::unique_ptr<Entity>>& entities) {
-
+    static void update(const std::vector<std::unique_ptr<Entity>>& entities, Camera& camera) {
         Entity* player = nullptr;
 
         // Find the player
-        for (auto& entity : entities) {
-            if (entity->hasComponent<PlayerTag>()) {
+        for (const auto& entity : entities) {
+            if (entity->hasComponent<PlayerTag>() && entity->hasComponent<Transform>()) {
                 player = entity.get();
                 break;
             }
         }
 
-        if (!player) return; // No player
+        // No player found
+        if (!player) {
+            return;
+        }
 
         const auto& transform = player->getComponent<Transform>();
 
-        for (auto& entity : entities) {
-            if (entity->hasComponent<Camera>()) {
-                auto&[view, worldWidth, worldHeight] = entity->getComponent<Camera>();
+        // Center camera on the player
+        camera.view.x = transform.position.x - camera.view.w / 2;
+        camera.view.y = transform.position.y - camera.view.h / 2;
 
-                // This positions the camera so the player is at the center of its view
-                view.x = transform.position.x - view.w / Constants::SCALE;
-                view.y = transform.position.y - view.h / Constants::SCALE;
+        // Clamp camera to world bounds
+        if (camera.view.x < 0.0f) camera.view.x = 0.0f;
+        if (camera.view.y < 0.0f) camera.view.y = 0.0f;
 
-                // Camera is positioning itself so the player is centered, but the player could walk off the screen
-                // Clamp the camera so it stays within the window
-                if (view.x < 0) view.x = 0;
-                if (view.y < 0) view.y = 0;
-                if (view.x > worldWidth - view.w) view.x = worldWidth - view.w;
-                if (view.y > worldHeight - view.h) view.y = worldHeight - view.h;
-            }
+        if (camera.view.x > camera.worldWidth - camera.view.w) {
+            camera.view.x = camera.worldWidth - camera.view.w;
         }
+
+        if (camera.view.y > camera.worldHeight - camera.view.h) {
+            camera.view.y = camera.worldHeight - camera.view.h;
+        }
+
+        // In case world is smaller than the view
+        if (camera.view.x < 0.0f) camera.view.x = 0.0f;
+        if (camera.view.y < 0.0f) camera.view.y = 0.0f;
     }
 };
 

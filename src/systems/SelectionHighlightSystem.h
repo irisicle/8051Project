@@ -14,7 +14,7 @@ struct Camera;
 
 class SelectionHighlightSystem {
 public:
-    void update(const std::vector<std::unique_ptr<Entity>>& entities, const Camera& camera);
+    void update(const std::vector<std::unique_ptr<Entity>> &entities, const Camera &camera);
     void draw(SDL_Renderer* renderer) const;
 
 private:

@@ -10,7 +10,7 @@
 #include "../ecs/event/EventEnums.h"
 #include "../ecs/core/World.h"
 
-void EventBindings::update(World& world) {
+void EventBindings::bind(World& world) {
 
     // Subscriptions
     world.getEventManager().subscribe([&world](const BaseEvent& event) {

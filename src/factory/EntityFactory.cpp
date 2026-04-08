@@ -3,7 +3,6 @@
 //
 
 #include "EntityFactory.h"
-
 #include "../ecs/component/Interaction.h"
 #include "../ecs/core/World.h"
 #include "../manager/AssetManager.h"
@@ -13,17 +12,6 @@
 #include "../ecs/component/Tag.h"
 
 struct Inventory;
-
-Entity& EntityFactory::createCamera(World& world, const int width, const int height) {
-    auto& camera(world.createEntity());
-
-    SDL_FRect camView{};
-    camView.w = static_cast<float>(width);
-    camView.h = static_cast<float>(height);
-    camera.addComponent<Camera>(camView, world.getMap().width * Constants::TILE_SIZE, world.getMap().height * Constants::TILE_SIZE);
-
-    return camera;
-}
 
 Entity& EntityFactory::createPlayer(World& world) {
     auto& player(world.createEntity());

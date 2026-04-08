@@ -5,6 +5,7 @@
 #include "UIFactory.h"
 #include "../ecs/core/World.h"
 #include "../ecs/component/UI.h"
+#include "../utils/Constants.h"
 
 Entity& UIFactory::createMainMenu(World &world, const int width, const int height) {
     auto& menu(world.createEntity());
@@ -36,7 +37,7 @@ Entity& UIFactory::createCogButton(World& world, const int width, const int heig
     auto& cog(world.createEntity());
     auto& transform = cog.addComponent<Transform>(Vector2D(static_cast<float>(width - 50), static_cast<float>(height - 50)), 0.0f, 1.0f);
 
-    SDL_Texture *texture = TextureManager::load("../asset/ui/catpaw_holding_mouse_icon.png");
+    SDL_Texture *texture = TextureManager::load("../asset/ui/mouse/catpaw_holding_mouse_icon.png");
     SDL_FRect src { 0, 0, 32, 32 };
 
     cog.addComponent<Sprite>(texture, src);
@@ -74,7 +75,7 @@ void UIFactory::createSettingsUIComponents(World& world, Entity& overlay) {
     auto& closeButton(world.createEntity());
     auto& closeTransform = closeButton.addComponent<Transform>(Vector2D(baseX + sprite.width - 40, baseY + 10), 0.0f, 1.0f);
 
-    SDL_Texture *texture = TextureManager::load("../asset/ui/catpaw_mouse_icon.png");
+    SDL_Texture *texture = TextureManager::load("../asset/ui/mouse/catpaw_mouse_icon.png");
     SDL_FRect closeSrc { 0, 0, Constants::TILE_SIZE, Constants::TILE_SIZE };
     SDL_FRect closeDest { closeTransform.position.x, closeTransform.position.y, closeSrc.w, closeSrc.h };
 

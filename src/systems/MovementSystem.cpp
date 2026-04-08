@@ -32,10 +32,10 @@ void MovementSystem::update(const std::vector<std::unique_ptr<Entity>> &entities
                 facing.direction = Direction::LEFT;
             }
             else if (direction.y > 0.0f) {
-                facing.direction = Direction::UP;
+                facing.direction = Direction::DOWN;
             }
             else if (direction.y < 0.0f) {
-                facing.direction = Direction::DOWN;
+                facing.direction = Direction::UP;
             }
         }
 
