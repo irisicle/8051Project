@@ -31,7 +31,7 @@ public:
     void initialize();
     void setMap(MapData newMap);
     void update(float deltaTime, const SDL_Event &event, SceneType sceneType);
-    void render(const Camera& camera);
+    void render(SDL_Renderer* renderer, const Camera& camera);
 
     Entity &createEntity();
     Entity &createDeferredEntity();
@@ -45,6 +45,10 @@ public:
 
     EventManager& getEventManager() {
         return eventManager;
+    }
+
+    AudioEventQueue& getAudioEventQueue() {
+        return audioEventQueue;
     }
 
     MapData& getMap() {

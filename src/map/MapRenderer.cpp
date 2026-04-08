@@ -4,17 +4,45 @@
 
 #include "MapRenderer.h"
 
+#include <iostream>
+
 #include "TileData.h"
+#include "MapData.h"
 #include "../ecs/component/Render.h"
 #include "../ecs/component/Physics.h"
 #include "../utils/Constants.h"
 #include "../manager/TextureManager.h"
 
-void MapRenderer::draw(const MapData &mapData, const Camera &camera) {
+// Helper to draw tilled soil overlay
+void MapRenderer::drawTilledOverlay(MapData &mapData, SDL_Renderer* renderer, const Camera& camera) {
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 110, 70, 40, 140);
+
+    for (int row = 0; row < mapData.height; row++) {
+        for (int col = 0; col < mapData.width; col++) {
+            if (const FarmTile* farmTile = mapData.getFarmTileAt(col, row); !farmTile || !farmTile->isTilled) {
+                continue;
+            }
+
+            const SDL_FRect dest {
+                std::round(static_cast<float>(col) * Constants::TILE_SIZE - camera.view.x),
+                std::round(static_cast<float>(row) * Constants::TILE_SIZE - camera.view.y),
+                static_cast<float>(Constants::TILE_SIZE),
+                static_cast<float>(Constants::TILE_SIZE)
+            };
+
+            SDL_RenderFillRect(renderer, &dest);
+        }
+    }
+}
+
+void MapRenderer::draw(MapData &mapData, SDL_Renderer *renderer, const Camera &camera) {
     SDL_FRect src{}, dest{};
     dest.w = dest.h = Constants::TILE_SIZE;
 
-    for (const auto& layer : mapData.grid) {
+    for (std::size_t layerIndex = 0; layerIndex < mapData.grid.size(); layerIndex++) {
+        const auto& layer = mapData.grid[layerIndex];
+
         for (int i = 0; i < mapData.width * mapData.height; i++) {
             Entity* gridEntity = layer[i];
             if (!gridEntity) {
@@ -51,4 +79,6 @@ void MapRenderer::draw(const MapData &mapData, const Camera &camera) {
             TextureManager::draw(sprite.texture, src, dest);
         }
     }
+
+    drawTilledOverlay(mapData, renderer, camera);
 }

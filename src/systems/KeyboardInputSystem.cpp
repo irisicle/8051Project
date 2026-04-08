@@ -3,6 +3,10 @@
 //
 
 #include "KeyboardInputSystem.h"
+
+#include <iostream>
+#include <ostream>
+
 #include "../ecs/component/Interaction.h"
 #include "../ecs/component/Inventory.h"
 #include "../ecs/core/World.h"
@@ -32,6 +36,7 @@ void KeyboardInputSystem::update(const std::vector<std::unique_ptr<Entity>> &ent
                     break;
                 case SDLK_E:
                     intent.usePressed = true;
+                    std::cout << "Player pressed E" << std::endl;
                     break;
 
                 case SDLK_1:

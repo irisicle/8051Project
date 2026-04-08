@@ -37,7 +37,7 @@ void Scene::update(const float deltaTime, const SDL_Event& event) {
 }
 
 void Scene::render(SDL_Renderer* renderer) {
-    world.render(camera);
+    world.render(renderer, camera);
     selectionHighlightSystem.draw(renderer);
 }
 

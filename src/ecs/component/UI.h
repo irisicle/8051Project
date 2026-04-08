@@ -29,4 +29,8 @@ struct Children : Component {
     std::vector<Entity*> children{};
 };
 
+struct InventorySlot : Component {
+    int slotIndex{0};
+};
+
 #endif //INC_8051PROJECT_UICOMPONENT_H

@@ -29,6 +29,9 @@ MapData MapLoader::load(const char* path, World &world) {
     mapData.width = mapNode->IntAttribute("width");
     mapData.height = mapNode->IntAttribute("height");
 
+    // Farming grid
+    mapData.farmTiles.resize(mapData.width * mapData.height);
+
     for (auto &layer: mapData.grid) {
         layer.clear();
         layer.resize(mapData.width * mapData.height, nullptr);

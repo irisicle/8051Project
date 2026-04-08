@@ -15,6 +15,8 @@
 #include "../../systems/CropGrowthSystem.h"
 #include "../../systems/EventBindings.h"
 #include "../../scene/SceneType.h"
+#include "../../systems/InventoryUISystem.h"
+#include "../../systems/PlayerActionSystem.h"
 #include "../../systems/PlayerControlSystem.h"
 #include "../event/AudioEventQueue.h"
 
@@ -35,6 +37,7 @@ void World::update(const float deltaTime, const SDL_Event& event, const SceneTyp
         EventBindings::bind(*this);
         KeyboardInputSystem::update(entities, event);
         PlayerControlSystem::update(entities);
+        PlayerActionSystem::update(entities, *this);
         MovementSystem::update(entities, deltaTime);
         CollisionSystem::update(*this);
         AnimationSystem::update(entities, deltaTime);
@@ -48,9 +51,10 @@ void World::update(const float deltaTime, const SDL_Event& event, const SceneTyp
     cleanUp();
 }
 
-void World::render(const Camera& camera) {
-    RenderSystem::render(*this, camera);
+void World::render(SDL_Renderer* renderer, const Camera& camera) {
+    RenderSystem::render(*this, renderer, camera);
     UIRenderSystem::render(entities);
+    InventoryUISystem::render(entities, renderer);
 }
 
 Entity& World::createEntity() {

@@ -71,7 +71,7 @@ struct MapData {
         grid[static_cast<size_t>(layer)][toIndex(x, y)] = entity;
     }
 
-    [[nodiscard]] FarmTile *getFarmTileAt(const int x, const int y) {
+    FarmTile *getFarmTileAt(const int x, const int y) {
         if (!isInBounds(x, y)) {
             return nullptr;
         }

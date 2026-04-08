@@ -10,7 +10,10 @@
 
 class MapRenderer {
 public:
-    static void draw(const MapData& mapData, const Camera& camera);
+    static void draw(MapData &mapData, SDL_Renderer *renderer, const Camera &camera);
+
+private:
+    static void drawTilledOverlay(MapData &mapData, SDL_Renderer* renderer, const Camera &camera);
 };
 
 #endif //INC_8051PROJECT_MAPRENDERER_H

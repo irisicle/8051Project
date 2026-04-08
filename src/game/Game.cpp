@@ -65,12 +65,11 @@ void Game::init(
 
     // Load audio
     audioManager.loadAudio("theme", "../asset/audio/pixel_music.mp3");
+    audioManager.loadAudio("till", "../asset/audio/blup_1.wav");
 
     // Load font
     AssetManager::loadFont("../asset/ui/fonts/pixel_font.ttf", "pixel", 16);
 
-    // SFX after action
-    // world.getAudioEventQueue().push(std::make_unique<AudioEvent>("collect"));
 
     // Load assets
     AssetManager::loadAnimation("player", "../asset/animations/character/player_animations.xml");

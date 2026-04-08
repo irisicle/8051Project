@@ -11,6 +11,7 @@
 
 enum class CollisionLayer {
     NONE,
+    UI,
     PLAYER,
     ANIMAL,
     ITEM,
@@ -48,7 +49,7 @@ struct Collider : Component {
 
     Collider() = default;
 
-    Collider(std::string& tag, const Vector2D offset, const float width, const float height, const CollisionLayer layer = CollisionLayer::NONE)
+    Collider(std::string tag, const Vector2D offset, const float width, const float height, const CollisionLayer layer = CollisionLayer::NONE)
         : tag(std::move(tag)), offset(offset), width(width), height(height), layer(layer) {}
 
 };

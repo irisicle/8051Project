@@ -20,6 +20,7 @@ Entity& EntityFactory::createPlayer(World& world) {
     player.addComponent<Transform>(Vector2D(140, 80), 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f, 0.0f), 120.0f);
     player.addComponent<Facing>(Direction::DOWN);
+    player.addComponent<Inventory>();
 
     auto animation = AssetManager::getAnimation("player");
     player.addComponent<Animation>(animation);
@@ -35,12 +36,16 @@ Entity& EntityFactory::createCow(World &world, const Vector2D& position) {
     auto& cow(world.createEntity());
     const auto& transform = cow.addComponent<Transform>(position, 0.0f, 1.0f);
 
+    SDL_Texture* texture = TextureManager::load("../asset/animations/animals/cow.png");
+
     auto animation = AssetManager::getAnimation("cow");
+    animation.currentClip = "idle";
+    animation.currentFrame = 0;
+    animation.frameTimer = 0.0f;
     cow.addComponent<Animation>(animation);
 
-    SDL_Texture* texture = TextureManager::load("../asset/animations/animals/cow.png");
-    SDL_FRect src {32, 32, 32, 32};
-    cow.addComponent<Sprite>(texture, src);
+    SDL_FRect src{32, 32, 32, 32};
+    cow.addComponent<Sprite>(texture, src, 64.0f, 64.0f, RenderLayer::WORLD, true);
 
     return cow;
 }

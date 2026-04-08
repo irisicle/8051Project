@@ -44,7 +44,9 @@ add_executable(8051Project src/main.cpp
         src/systems/SelectionHighlightSystem.cpp
         src/manager/AudioManager.cpp
         src/systems/HUDSystem.cpp
-        src/ecs/core/World.cpp)
+        src/ecs/core/World.cpp
+        src/systems/InventoryUISystem.cpp
+        src/systems/PlayerActionSystem.cpp)
 
 target_link_libraries(8051Project SDL3::SDL3
 SDL3_image::SDL3_image

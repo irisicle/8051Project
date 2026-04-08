@@ -21,11 +21,18 @@ Entity& UIFactory::createMainMenu(World &world, const int width, const int heigh
 Entity& UIFactory::createSettingsOverlay(World& world, const int width, const int height) {
     auto& overlay(world.createEntity());
 
-    SDL_Texture *texture = TextureManager::load("../asset/ui/settings_menu.png");
-    SDL_FRect src { 0, 0, static_cast<float>(width) * 0.85f, static_cast<float>(height) * 0.85f };
+    const float overlayWidth = static_cast<float>(width) * 0.85f;
+    const float overlayHeight = static_cast<float>(height) * 0.85f;
 
-    overlay.addComponent<Transform>(Vector2D(src.x, src.y), 0.0f, 1.0f);
-    overlay.addComponent<Sprite>(texture, src, static_cast<float>(width), static_cast<float>(height), RenderLayer::UI, false);
+    // Center on screen
+    const float x = (static_cast<float>(width) - overlayWidth) / 2.0f;
+    const float y = (static_cast<float>(height) - overlayHeight) / 2.0f;
+
+    SDL_Texture *texture = TextureManager::load("../asset/ui/settings_menu.png");
+    SDL_FRect src { 0, 0, overlayWidth, overlayHeight };
+
+    overlay.addComponent<Transform>(Vector2D(x, y), 0.0f, 1.0f);
+    overlay.addComponent<Sprite>(texture, src, overlayWidth, overlayHeight, RenderLayer::UI, false);
 
     createSettingsUIComponents(world, overlay);
 
@@ -41,7 +48,7 @@ Entity& UIFactory::createCogButton(World& world, const int width, const int heig
     SDL_FRect src { 0, 0, 32, 32 };
 
     cog.addComponent<Sprite>(texture, src);
-    // cog.addComponent<Collider>("ui");
+    cog.addComponent<Collider>("ui", Vector2D(0.0f, 0.0f), 32.0f, 32.0f, CollisionLayer::UI);
 
     auto& clickable = cog.addComponent<Clickable>();
 
@@ -77,10 +84,9 @@ void UIFactory::createSettingsUIComponents(World& world, Entity& overlay) {
 
     SDL_Texture *texture = TextureManager::load("../asset/ui/mouse/catpaw_mouse_icon.png");
     SDL_FRect closeSrc { 0, 0, Constants::TILE_SIZE, Constants::TILE_SIZE };
-    SDL_FRect closeDest { closeTransform.position.x, closeTransform.position.y, closeSrc.w, closeSrc.h };
 
-    closeButton.addComponent<Sprite>(texture, closeSrc, closeDest.w, closeDest.h, RenderLayer::UI, false);
-    // closeButton.addComponent<Collider>("ui", closeDest);
+    closeButton.addComponent<Sprite>(texture, closeSrc, static_cast<float>(Constants::TILE_SIZE), static_cast<float>(Constants::TILE_SIZE), RenderLayer::UI, false);
+    closeButton.addComponent<Collider>("ui", Vector2D(0.0f, 0.0f), static_cast<float>(Constants::TILE_SIZE), static_cast<float>(Constants::TILE_SIZE), CollisionLayer::UI);
 
     auto& clickable = closeButton.addComponent<Clickable>();
 
@@ -99,7 +105,7 @@ void UIFactory::createSettingsUIComponents(World& world, Entity& overlay) {
 
     closeButton.addComponent<Parent>(&overlay);
 
-    auto& parentChildren = overlay.addComponent<Children>();
+    auto& parentChildren = overlay.getComponent<Children>();
     parentChildren.children.push_back(&closeButton);
 }
 

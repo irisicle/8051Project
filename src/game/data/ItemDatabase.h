@@ -5,15 +5,23 @@
 #ifndef INC_8051PROJECT_ITEMDATABASE_H
 #define INC_8051PROJECT_ITEMDATABASE_H
 
-#include <map>
+#include <unordered_map>
 #include "ItemData.h"
+
+struct ItemIdHash {
+    std::size_t operator()(ItemId id) const noexcept {
+        return static_cast<std::size_t>(id);
+    }
+};
 
 class ItemDatabase {
 public:
+    static void initialize();
     static const ItemData& get(ItemId id);
 
 private:
-    static const std::unordered_map<ItemId, ItemData> items;
+    static std::unordered_map<ItemId, ItemData, ItemIdHash> items;
+    static bool initialized;
 };
 
 #endif //INC_8051PROJECT_ITEMDATABASE_H

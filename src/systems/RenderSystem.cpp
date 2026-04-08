@@ -8,10 +8,10 @@
 #include "../map/MapRenderer.h"
 #include "../ecs/core/World.h"
 
-void RenderSystem::render(World& world, const Camera& camera) {
+void RenderSystem::render(World& world, SDL_Renderer* renderer, const Camera& camera) {
 
     // Draw map
-    MapRenderer::draw(world.getMap(), camera);
+    MapRenderer::draw(world.getMap(), renderer, camera);
 
     // Draw world sprites
     SpriteSystem::draw(world.getEntities(), camera);

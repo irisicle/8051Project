@@ -15,7 +15,7 @@ struct InventoryItem {
 };
 
 struct Inventory : Component {
-    std::vector<InventoryItem> items{};
+    std::vector<InventoryItem> items{{ItemId::HOE, 1}, {ItemId::WATERING_CAN}, {ItemId::CARROT_SEEDS}};
     int selectedIndex{0};
 
     Inventory() = default;

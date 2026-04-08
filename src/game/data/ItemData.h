@@ -6,6 +6,7 @@
 #define INC_8051PROJECT_ITEMDATA_H
 
 #include <string>
+#include <SDL3/SDL.h>
 #include "../GameplayEnums.h"
 #include "../../utils/ItemEnums.h"
 #include "../../utils/CropEnums.h"
@@ -20,6 +21,9 @@ struct ItemData {
     bool consumableOnUse{false};
 
     CropType cropType{CropType::NONE};
+
+    SDL_Texture* texture{nullptr};
+    SDL_FRect src{};
 };
 
 #endif //INC_8051PROJECT_ITEMDATA_H
