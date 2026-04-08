@@ -12,6 +12,7 @@ set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/sdl3")
 find_package(SDL3 REQUIRED CONFIG)
 find_package(SDL3_Image REQUIRED CONFIG)
 find_package(SDL3_mixer REQUIRED CONFIG)
+find_package(SDL3_ttf REQUIRED CONFIG)
 
 add_executable(8051Project src/main.cpp
         src/game/Game.cpp
@@ -41,8 +42,10 @@ add_executable(8051Project src/main.cpp
         src/systems/EventBindings.cpp
         src/game/services/ToolService.cpp
         src/systems/SelectionHighlightSystem.cpp
-        src/manager/AudioManager.cpp)
+        src/manager/AudioManager.cpp
+        src/systems/HUDSystem.cpp)
 
 target_link_libraries(8051Project SDL3::SDL3
 SDL3_image::SDL3_image
-SDL3_mixer::SDL3_mixer)
+SDL3_mixer::SDL3_mixer
+SDL3_ttf::SDL3_ttf)

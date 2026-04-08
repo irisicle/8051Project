@@ -32,6 +32,9 @@ SDL_Texture* TextureManager::load(const char* path) {
     // Texture represents an image in VRAM (GPU memory)
     SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer, tempSurface);
 
+    // Do not blur the pixels to keep blocky pixel-art style
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+
     // Clean up surface
     SDL_DestroySurface (tempSurface);
 
@@ -47,6 +50,7 @@ SDL_Texture* TextureManager::load(const char* path) {
 }
 
 void TextureManager::draw(SDL_Texture* texture, const SDL_FRect src, const SDL_FRect dest) {
+
     // Draw the texture to the screen from the VRAM
     SDL_RenderTexture(game->renderer, texture, &src, &dest);
 }

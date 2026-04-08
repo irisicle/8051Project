@@ -30,8 +30,8 @@ void SelectionHighlightSystem::update(const std::vector<std::unique_ptr<Entity>>
     const auto& facing = player->getComponent<Facing>();
     const Vector2D target = GridUtils::getFacingTile(transform.position, facing.direction, transform.scale, Constants::TILE_SIZE);
 
-    rect.x = target.x * Constants::TILE_SIZE - camera.view.x;
-    rect.y = target.y * Constants::TILE_SIZE - camera.view.y;
+    rect.x = std::round(target.x * Constants::TILE_SIZE - camera.view.x);
+    rect.y = std::round(target.y * Constants::TILE_SIZE - camera.view.y);
     rect.w = Constants::TILE_SIZE;
     rect.h = Constants::TILE_SIZE;
 

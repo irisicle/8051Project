@@ -49,13 +49,25 @@ void Game::init(
             std::cout << "Renderer could not be created..." << std::endl;
             return;
         }
+
+        // Vsync asks SDL to wait for the monitor’s refresh before showing the next frame
+        // This reduces visible tearing
+        if (!SDL_SetRenderVSync(renderer, 1)) {
+            std::cout << "Vsync could not be set..." << SDL_GetError() << std::endl;
+        }
+
         isRunning = true;
-    } else {
+    }
+
+    else {
         isRunning = false;
     }
 
     // Load audio
-    audioManager.loadAudio("theme", "../asset/audio/bing_1.wav");
+    audioManager.loadAudio("theme", "../asset/audio/pixel_music.mp3");
+
+    // Load font
+    AssetManager::loadFont("../asset/ui/fonts/pixel_font.ttf", "pixel", 16);
 
     // SFX after action
     // world.getAudioEventQueue().push(std::make_unique<AudioEvent>("collect"));
@@ -67,6 +79,9 @@ void Game::init(
     // Load scenes
     sceneManager.loadScene(SceneType::MAIN_MENU, "mainmenu", nullptr, width, height);
     sceneManager.loadScene(SceneType::GAMEPLAY, "level1", "../asset/map.tmx", width, height);
+
+    // Play music
+    audioManager.playMusic("theme");
 
     // Init game data/state
     gameState.playerHealth = 5;
@@ -94,8 +109,8 @@ void Game::init(
 }
 
 void Game::handleEvents() {
-    // SDL listens to the OS for input events internally, and it adds them to a queue
 
+    // SDL listens to the OS for input events internally, and it adds them to a queue
     // Checks for next event, if an event is available it will remove from the queue and store in event
     SDL_PollEvent(&event);
 
@@ -113,6 +128,7 @@ void Game::update(const float deltaTime) {
 }
 
 void Game::render() {
+
     // Color change
     if (const Uint32 startTime = SDL_GetTicks(); startTime - lastColorChangeMs >= 1000) {
         lastColorChangeMs = startTime;

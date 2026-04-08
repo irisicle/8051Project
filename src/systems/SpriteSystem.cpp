@@ -38,10 +38,10 @@ void SpriteSystem::draw(const std::vector<std::unique_ptr<Entity>> &entities, co
         }
 
         const SDL_FRect dest{
-            transform.position.x - camera.view.x,
-            transform.position.y - camera.view.y,
-            sprite.width * transform.scale,
-            sprite.height * transform.scale
+            std::round(transform.position.x - camera.view.x),
+            std::round(transform.position.y - camera.view.y),
+            std::round(sprite.width * transform.scale),
+            std::round(sprite.height * transform.scale)
         };
 
         // Culling - skip off-screen entities

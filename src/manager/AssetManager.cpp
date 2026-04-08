@@ -5,7 +5,16 @@
 #include "AssetManager.h"
 #include "../vendor/tinyxml2.h"
 
+std::unordered_map<std::string, TTF_Font*> AssetManager::fonts;
 std::unordered_map<std::string, Animation> AssetManager::animations;
+
+void AssetManager::loadFont(const char* path, const std::string& name, const float fontSize) {
+    fonts.emplace(name, TTF_OpenFont(path, fontSize));
+}
+
+TTF_Font* AssetManager::getFont(const std::string& name) {
+    return fonts[name];
+}
 
 void AssetManager::loadAnimation(const std::string& clipName, const char* path) {
     const Animation animation = loadAnimationFromXML(path);
