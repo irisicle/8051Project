@@ -7,11 +7,9 @@
 
 #include "../ecs/event/BaseEvent.h"
 
-class World;
-
 class CollisionResponseSystem {
 public:
-    static void handle(const CollisionEvent& event, const char* otherTag, World& world);
+    static void handle(const CollisionEvent& event, const char* otherTag);
 
 private:
     static bool getCollisionEntities(const CollisionEvent& event, const char* otherTag, Entity*& player, Entity*& other);

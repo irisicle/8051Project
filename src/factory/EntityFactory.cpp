@@ -10,6 +10,10 @@
 #include "../ecs/component/Inventory.h"
 #include "../ecs/component/Physics.h"
 #include "../ecs/component/Tag.h"
+#include "../game/data/CropData.h"
+#include "../game/data/CropVisualDatabase.h"
+#include "../utils/Constants.h"
+#include "../utils/CropEnums.h"
 
 struct Inventory;
 
@@ -50,7 +54,15 @@ Entity& EntityFactory::createCow(World &world, const Vector2D& position) {
     return cow;
 }
 
-Entity& EntityFactory::createCrop(World &world, const Vector2D& position) {
-    auto& crop(world.createEntity());
+Entity& EntityFactory::createCrop(World &world, CropType type, const int x, const int y) {
+    auto& crop = world.createEntity();
+
+    crop.addComponent<Crop>(type, 0, 10.0f);
+    crop.addComponent<Transform>(Vector2D(
+        static_cast<float>(x) * Constants::TILE_SIZE,
+        static_cast<float>(y) * Constants::TILE_SIZE),
+        0.0f,
+        1.0f);
+
     return crop;
 }

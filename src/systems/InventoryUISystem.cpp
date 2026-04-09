@@ -39,18 +39,17 @@ void InventoryUISystem::render(const std::vector<std::unique_ptr<Entity>>& entit
     int screenHeight = 0;
     SDL_GetRenderOutputSize(renderer, &screenWidth, &screenHeight);
 
-    const float slotSize = 56.0f;
-    const float spacing = 8.0f;
-    const float iconPadding = 8.0f;
+    constexpr float slotSize = 56.0f;
+    constexpr float spacing = 8.0f;
 
-    const float totalWidth = slotCount * slotSize + (slotCount - 1) * spacing;
+    const float totalWidth = static_cast<float>(slotCount) * slotSize + static_cast<float>(slotCount - 1) * spacing;
     const float startX = (static_cast<float>(screenWidth) - totalWidth) * 0.5f;
     const float startY = static_cast<float>(screenHeight) - slotSize - 20.0f;
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     for (int i = 0; i < slotCount; ++i) {
-        const float x = startX + i * (slotSize + spacing);
+        const float x = startX + static_cast<float>(i) * (slotSize + spacing);
         const float y = startY;
 
         const SDL_FRect slotRect{
@@ -70,7 +69,7 @@ void InventoryUISystem::render(const std::vector<std::unique_ptr<Entity>>& entit
 
         // selected slot highlight
         if (i == inventory.selectedIndex) {
-            const float padding = 4.0f;
+            constexpr float padding = 4.0f;
 
             const SDL_FRect selectedRect{
                 x - 3.0f,
@@ -84,9 +83,9 @@ void InventoryUISystem::render(const std::vector<std::unique_ptr<Entity>>& entit
         }
 
         const auto& slot = inventory.items[i];
-        const auto& itemData = ItemDatabase::get(slot.id);
 
-        if (slot.id != ItemId::NONE && itemData.texture) {
+        if (const auto& itemData = ItemDatabase::get(slot.id); slot.id != ItemId::NONE && itemData.texture) {
+            constexpr float iconPadding = 8.0f;
             const SDL_FRect iconDest{
                 x + iconPadding,
                 y + iconPadding,

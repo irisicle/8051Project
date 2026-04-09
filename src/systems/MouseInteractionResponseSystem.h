@@ -9,11 +9,9 @@
 #include "../ecs/core/Entity.h"
 #include "../ecs/event/BaseEvent.h"
 
-class World;
-
 class MouseInteractionResponseSystem {
 public:
-    static void handle(const MouseInteractionEvent& event, World& world) {
+    static void handle(const MouseInteractionEvent& event) {
         if (!event.entity || !event.entity->hasComponent<Clickable>()) {
             return;
         }

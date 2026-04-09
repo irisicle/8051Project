@@ -30,6 +30,7 @@ public:
     }
 
     // const overload
+    // Read only access
     [[nodiscard]] const Camera& getCamera() const {
         return camera;
     }

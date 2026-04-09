@@ -8,7 +8,7 @@
 
 #include <string>
 
-void CollisionResponseSystem::handle(const CollisionEvent& event, const char* otherTag, World& world) {
+void CollisionResponseSystem::handle(const CollisionEvent& event, const char* otherTag) {
     Entity* player = nullptr;
     Entity* other = nullptr;
 

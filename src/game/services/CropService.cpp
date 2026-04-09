@@ -6,10 +6,9 @@
 
 #include "../data/CropData.h"
 #include "../../ecs/component/Inventory.h"
-#include "../../ecs/component/Physics.h"
 #include "../../ecs/component/Render.h"
 #include "../../ecs/core/World.h"
-#include "../../utils/Constants.h"
+#include "../../factory/EntityFactory.h"
 #include "../data/CropVisualDatabase.h"
 #include "../data/ItemDatabase.h"
 
@@ -55,15 +54,11 @@ bool CropService::plant(World& world, Entity& player, const int x, const int y) 
         return false;
     }
 
+    // Get crop texture from database
     const auto& visualData = CropVisualDatabase::get(item.cropType);
 
-    auto& crop = world.createEntity();
-
-    crop.addComponent<Crop>(item.cropType, 0, 10.0f);
-    crop.addComponent<Transform>(Vector2D(
-        static_cast<float>(x) * Constants::TILE_SIZE,
-        static_cast<float>(y) * Constants::TILE_SIZE), 0.0f, 1.0f
-        );
+    // Create crop entity
+    auto& crop = EntityFactory::createCrop(world, item.cropType, x, y);
 
     crop.addComponent<Sprite>(
         visualData.texture,

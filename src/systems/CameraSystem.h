@@ -9,6 +9,7 @@
 #include "../ecs/component/Tag.h"
 #include "../ecs/core/Entity.h"
 #include "../ecs/core/Camera.h"
+#include "../ecs/component/Physics.h"
 
 class CameraSystem {
 public:
